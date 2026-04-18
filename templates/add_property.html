@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <title>Add New Property</title>
+</head>
+<body class="auth-wrapper">
+    <div class="form-box">
+        <h2>Add New Post</h2>
+
+  
+
+  
+    <form action="{{ url_for('add_property') }}" method="POST" enctype="multipart/form-data">
+        <div class="input-group">
+            <input type="text" name="title" placeholder="Property Title (ex: Luxury Villa in Galle)" required>
+        </div>
+        
+        <div class="input-group">
+            <select name="category" required>
+                <option value="" disabled selected>Select Category</option>
+                <option value="House">House</option>
+                <option value="Land">Land</option>
+                <option value="Apartment">Apartment</option>
+                <option value="Commercial">Commercial</option>
+            </select>
+        </div>
+
+        <div class="input-group">
+            <input type="text" name="location" placeholder="Location (City)" required>
+        </div>
+
+        <div class="input-group">
+            <input type="number" name="price" placeholder="Price (Rs.)" required>
+        </div>
+
+        <div class="input-group">
+            <textarea name="description" placeholder="Write more details about your property..." rows="4" required></textarea>
+        </div>
+
+        <div class="input-group">
+            <input type="date" name="expiry_date" required title="Post Expiry Date">
+        </div>
+
+        <div class="input-group">
+            <label style="font-size: 13px; color: #777;">Upload Property Image:</label>
+            <input type="file" name="image" accept="image/*" required>
+        </div>
+
+        <button type="submit" class="auth-btn">Proceed to Payment</button>
+        <div class="form-footer">
+            <a href="{{ url_for('seller_dashboard') }}">Cancel and Back</a>
+        </div>
+    </form>
+</div>
+        </form>
+    </div>
+</body>
+</html>

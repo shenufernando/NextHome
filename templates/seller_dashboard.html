@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Dashboard - NextHome</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="admin-body">
+
+    <div class="admin-wrapper">
+        <nav class="sidebar">
+            <div class="sidebar-header">Next<span>Home</span></div>
+            <div class="sidebar-menu">
+                <a href="{{ url_for('seller_dashboard') }}" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+                <a href="{{ url_for('add_property') }}"><i class="fas fa-plus-circle"></i> Add New Post</a>
+                <a href="#"><i class="fas fa-envelope"></i> Messages <span class="badge">{{ unread }}</span></a>
+                <a href="#"><i class="fas fa-user-cog"></i> Profile Settings</a>
+                <a href="{{ url_for('logout') }}" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            </div>
+        </nav>
+
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h2>Welcome back, <span>{{ name }}!</span></h2>
+                <p>Manage your properties and inquiries from here.</p>
+            </header>
+
+           <div class="stats-grid">
+    <div class="stat-card">
+        <i class="fas fa-home"></i>
+        <div class="stat-info">
+            <h3>{{ posts|length }}</h3>
+            <p>Total Listings</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <i class="fas fa-eye"></i>
+        <div class="stat-info">
+            <h3>150+</h3>
+            <p>Total Views</p>
+        </div>
+    </div>
+
+    <div class="stat-card">
+        <i class="fas fa-comments"></i>
+        <div class="stat-info">
+            <h3>{{ unread }}</h3>
+            <p>New Inquiries</p>
+        </div>
+    </div>
+</div>
+            <section class="data-section">
+                <div class="section-title">
+                    <h3>My Property Listings</h3>
+                    <a href="{{ url_for('add_property') }}" class="add-btn">+ Add New</a>
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Property Title</th>
+                            <th>Price</th>
+                            <th>Expiry Date</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for post in posts %}
+                        <tr>
+                            <td><img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" width="60" style="border-radius: 5px;"></td>
+                            <td>{{ post.title }}</td>
+                            <td>Rs. {{ post.price }}</td>
+                            <td>{{ post.expiry_date }}</td>
+                            <td>
+                                <span class="status status-{{ post.status }}">
+                                    {{ post.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <a href="#" class="edit-link"><i class="fas fa-edit"></i></a>
+                                <a href="#" class="delete-link"><i class="fas fa-trash"></i></a>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 20px;">No properties added yet.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+</body>
+</html>

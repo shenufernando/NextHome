@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | NextHome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+    <header class="auth-nav">
+        <div style="position: absolute; left: 5%;">
+            <a href="/" style="font-size: 22px; font-weight: 700; color: #3498db;">NextHome</a>
+        </div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/login" class="login-btn">Login</a>
+        </div>
+    </header>
+
+    <div class="split-container">
+        <div class="left-side">
+            <div>
+                <h1>Welcome to NextHome!</h1>
+                <p>"Owning a home is a keystone of wealth; both financial affluence and emotional security."</p>
+            </div>
+        </div>
+
+        <div class="right-side">
+            <div class="form-box">
+                <h2 style="font-size: 30px; margin-bottom: 5px;">Create Account</h2>
+                <p style="margin-bottom: 25px;">Sign up to explore properties</p>
+                
+                <form action="/signup" method="POST">
+                    <div class="input-group">
+                        <input type="text" name="name" placeholder="Full Name" required>
+                    </div>
+                    
+                    <div class="input-group">
+                        <input type="email" name="email" placeholder="Email Address" required>
+                    </div>
+
+                    <div class="input-group">
+                        <input type="password" name="password" id="password" placeholder="Password" required>
+                        <i class="fas fa-eye password-toggle" id="togglePassword"></i>
+                    </div>
+
+                    <div class="input-group">
+                        <select name="role">
+                            <option value="seeker">I want to find a home</option>
+                            <option value="seller">I want to sell/rent a home</option>
+                        </select>
+                    </div>
+
+                    <button type="submit" class="auth-btn">Sign Up</button>
+                </form>
+
+                <div class="form-footer">
+                    Already have an account? <a href="/login">Login here</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#password');
+        togglePassword.addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            this.classList.toggle('fa-eye-slash');
+        });
+    </script>
+</body>
+</html>

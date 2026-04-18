@@ -1,0 +1,1069 @@
+/* General Reset */
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family: 'Poppins', sans-serif;
+
+}
+
+
+
+body {
+
+    color: #333;
+
+    line-height: 1.6;
+
+    background-color: #fff;
+
+}
+
+
+
+/* --- Navigation Bar --- */
+
+nav {
+
+    background: #fff;
+
+    height: 80px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 5%;
+
+    position: sticky;
+
+    top: 0;
+
+    z-index: 1000;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+
+}
+
+
+
+.logo {
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    color: #2c3e50;
+
+    text-decoration: none;
+
+}
+
+
+
+.logo span {
+
+    color: #3498db;
+
+}
+
+
+
+nav ul {
+
+    display: flex;
+
+    list-style: none;
+
+}
+
+
+
+nav ul li {
+
+    margin-left: 30px;
+
+}
+
+
+
+nav ul li a {
+
+    text-decoration: none;
+
+    color: #555;
+
+    font-weight: 500;
+
+    transition: 0.3s;
+
+}
+
+
+
+nav ul li a:hover {
+
+    color: #3498db;
+
+}
+
+
+
+.nav-btns .login-btn {
+
+    padding: 8px 20px;
+
+    color: #3498db;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+}
+
+
+
+.nav-btns .signup-btn {
+
+    padding: 10px 25px;
+
+    background: #3498db;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    border-radius: 50px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+
+}
+
+
+
+.nav-btns .signup-btn:hover {
+
+    background: #2980b9;
+
+    box-shadow: 0 4px 15px rgba(52, 152, 219, 0.4);
+
+}
+
+
+
+/* --- Hero Section --- */
+
+.hero {
+
+    height: 90vh;
+
+    background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
+
+                url('https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+
+    background-size: cover;
+
+    background-position: center;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+
+    color: #fff;
+
+    padding: 0 20px;
+
+}
+
+
+
+.hero h1 {
+
+    font-size: 50px;
+
+    font-weight: 700;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.hero p {
+
+    font-size: 18px;
+
+    max-width: 600px;
+
+    margin-bottom: 30px;
+
+    opacity: 0.9;
+
+}
+
+
+
+.hero .btn-group .main-btn {
+
+    padding: 15px 40px;
+
+    background: #3498db;
+
+    color: #fff;
+
+    text-decoration: none;
+
+    border-radius: 5px;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+    transition: 0.3s;
+
+}
+
+
+
+.hero .btn-group .main-btn:hover {
+
+    background: #2980b9;
+
+}
+
+
+
+/* --- Features/Services Section --- */
+
+.features {
+
+    padding: 80px 5%;
+
+    text-align: center;
+
+    background: #f9f9f9;
+
+}
+
+
+
+.features h2 {
+
+    font-size: 32px;
+
+    margin-bottom: 40px;
+
+    color: #2c3e50;
+
+}
+
+
+
+.feature-container {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+
+    gap: 30px;
+
+}
+
+
+
+.feature-box {
+
+    background: #fff;
+
+    padding: 40px;
+
+    border-radius: 10px;
+
+    transition: 0.3s;
+
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+
+}
+
+
+
+.feature-box:hover {
+
+    transform: translateY(-10px);
+
+}
+
+
+
+.feature-box i {
+
+    font-size: 40px;
+
+    color: #3498db;
+
+    margin-bottom: 20px;
+
+}
+
+
+
+.feature-box h3 {
+
+    margin-bottom: 15px;
+
+}
+
+
+
+/* --- Footer --- */
+
+footer {
+
+    background: #2c3e50;
+
+    color: #fff;
+
+    padding: 50px 5% 20px;
+
+    text-align: center;
+
+}
+
+
+
+.footer-content {
+
+    display: grid;
+
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+
+    gap: 40px;
+
+    text-align: left;
+
+    margin-bottom: 40px;
+
+}
+
+
+
+.footer-box h3 {
+
+    margin-bottom: 20px;
+
+    font-size: 20px;
+
+    color: #3498db;
+
+}
+
+
+
+.footer-box a {
+
+    display: block;
+
+    color: #bdc3c7;
+
+    text-decoration: none;
+
+    margin-bottom: 10px;
+
+    transition: 0.3s;
+
+}
+
+
+
+.footer-box a:hover {
+
+    color: #fff;
+
+    padding-left: 5px;
+
+}
+
+
+
+.social-icons a {
+
+    display: inline-block;
+
+    margin-right: 15px;
+
+    font-size: 20px;
+
+    color: #bdc3c7;
+
+    transition: 0.3s;
+
+}
+
+
+
+.social-icons a:hover {
+
+    color: #3498db;
+
+}
+
+
+
+.copyright {
+
+    border-top: 1px solid #444;
+
+    padding-top: 20px;
+
+    font-size: 14px;
+
+    color: #bdc3c7;
+
+}
+
+/*sinup*/
+
+/* --- Signup & Login Form Design --- */
+
+.auth-wrapper {
+
+    min-height: 90vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    background: #f4f7f6;
+
+    padding: 20px;
+
+}
+
+
+
+.form-box {
+
+    background: #fff;
+
+    padding: 40px;
+
+    width: 100%;
+
+    max-width: 450px;
+
+    border-radius: 15px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+
+    text-align: center;
+
+}
+
+
+
+.form-box h2 {
+
+    margin-bottom: 10px;
+
+    color: #2c3e50;
+
+    font-size: 28px;
+
+}
+
+
+
+.form-box p {
+
+    color: #777;
+
+    margin-bottom: 30px;
+
+}
+
+
+
+.input-group {
+
+    position: relative;
+
+    margin-bottom: 20px;
+
+    text-align: left;
+
+}
+
+
+
+.input-group input, .input-group select {
+
+    width: 100%;
+
+    padding: 12px 15px;
+
+    border: 1px solid #ddd;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    font-size: 14px;
+
+    transition: 0.3s;
+
+}
+
+
+
+.input-group input:focus {
+
+    border-color: #3498db;
+
+}
+
+
+
+/* Password Toggle Icon */
+
+.password-toggle {
+
+    position: absolute;
+
+    right: 15px;
+
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    cursor: pointer;
+
+    color: #999;
+
+}
+
+
+
+.auth-btn {
+
+    width: 100%;
+
+    padding: 13px;
+
+    background: #3498db;
+
+    color: white;
+
+    border: none;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+
+}
+
+
+
+.auth-btn:hover {
+
+    background: #2980b9;
+
+}
+
+
+
+.form-footer {
+
+    margin-top: 20px;
+
+    font-size: 14px;
+
+}
+
+
+
+.form-footer a {
+
+    color: #3498db;
+
+    text-decoration: none;
+
+    font-weight: 600;
+
+}
+
+
+
+/* --- Global Styles --- */
+
+* { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+
+
+body { background-color: #fff; overflow-x: hidden; }
+
+
+
+/* --- Navigation Bar Fix --- */
+
+.auth-nav {
+
+    height: 70px;
+
+    display: flex;
+
+    justify-content: flex-end; /* Links දකුණු පැත්තට */
+
+    align-items: center;
+
+    padding: 0 5%;
+
+    background: #fff; /* සුදු පාට පසුබිමක් */
+
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+
+    position: relative;
+
+    z-index: 100;
+
+}
+
+
+
+.auth-nav .nav-links {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 30px;
+
+}
+
+
+
+.auth-nav a {
+
+    text-decoration: none;
+
+    color: #333;
+
+    font-weight: 500;
+
+    transition: 0.3s;
+
+}
+
+
+
+.auth-nav .login-btn {
+
+    background: #3498db;
+
+    color: #fff;
+
+    padding: 8px 25px;
+
+    border-radius: 50px;
+
+}
+
+
+
+.auth-nav .login-btn:hover { background: #2980b9; }
+
+
+
+/* --- Split Container --- */
+
+.split-container {
+
+    display: flex;
+
+    height: calc(100vh - 70px); /* Nav bar එකේ උස අඩු කරාම ඉතිරි කොටස */
+
+}
+
+
+
+/* Left Side - Light Blue Mix */
+
+.left-side {
+
+    flex: 1;
+
+    background: linear-gradient(135deg, #e0f2fe 0%, #7dd3fc 100%); /* Light Blue Mix */
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    padding: 40px;
+
+    text-align: center;
+
+}
+
+
+
+.left-side h1 {
+
+    font-size: 50px;
+
+    font-weight: 800;
+
+    color: #0369a1; /* තද නිල් පාට */
+
+    white-space: nowrap; /* එක පේළියට තියාගන්න */
+
+}
+
+
+
+.left-side p {
+
+    font-size: 18px;
+
+    color: #075985;
+
+    margin-top: 15px;
+
+    max-width: 450px;
+
+}
+
+
+
+/* Right Side - Form in Center */
+
+.right-side {
+
+    flex: 1;
+
+    display: flex;
+
+    justify-content: center; /* හරහට මැදට */
+
+    align-items: center;     /* උසින් මැදට */
+
+    background: #fff;
+
+    padding: 20px;
+
+}
+
+
+
+.form-box {
+
+    width: 100%;
+
+    max-width: 400px;
+
+    text-align: center;
+
+}
+
+
+
+/* Auth Button Color change to Blue */
+
+.auth-btn {
+
+    background: #3498db;
+
+    /* අනිත් කලින් තිබුණ styles එහෙම්මමයි */
+
+}
+
+
+
+
+
+/* admin adshboard */
+
+/* seller adshboard */
+/* --- Dashboard Layout Fix --- */
+.admin-wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar එක සම්පූර්ණයෙන්ම වම් පැත්තට Lock කිරීම */
+.sidebar {
+    width: 280px;
+    background: #2c3e50;
+    color: #fff;
+    position: fixed;
+    height: 100vh;
+    left: 0;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column; /* උඩ සිට පහළට පෙළගැස්වීම */
+}
+
+/* --- ඔයා ඉල්ලපු NextHome Heading එක --- */
+.sidebar-header {
+    padding: 40px 20px;
+    font-size: 30px;
+    font-weight: 800;
+    text-align: center;
+    background: #2c3e50; /* නිල් පාට පැත්තේම තිබීම */
+    color: #3498db; /* Next කොටස නිල් */
+    text-transform: uppercase;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-header span {
+    color: #ffffff; /* Home කොටස සුදු */
+}
+
+/* Sidebar Menu Spacing - අකුරු එක උඩ එක වැටීම වැළැක්වීමට */
+.sidebar-menu {
+    padding: 20px 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Menu අතර ඉඩ */
+}
+
+.sidebar-menu a {
+    display: flex;
+    align-items: center;
+    padding: 15px 20px;
+    color: #bdc3c7;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: 0.3s;
+    font-size: 16px;
+}
+
+.sidebar-menu a i {
+    margin-right: 15px;
+    font-size: 20px;
+    width: 25px;
+    text-align: center;
+}
+
+.sidebar-menu a:hover, .sidebar-menu a.active {
+    background: #3498db;
+    color: #fff;
+}
+
+/* Logout button එක පතුලටම යැවීම */
+.logout-link {
+    margin-top: auto; /* අනිත් ඒවායින් ඈත් කර පහළටම යවයි */
+    margin-bottom: 30px;
+    color: #e74c3c !important;
+}
+
+/* Main Content එක Sidebar එකට යට නොවීමට */
+.main-content {
+    margin-left: 280px;
+    padding: 40px;
+    width: calc(100% - 280px);
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+/* Stats Cards Layout (Icons and Text in line) */
+.stats-grid {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card {
+    flex: 1;
+    background: #fff;
+    padding: 25px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+}
+
+/* --- Main Content Container --- */
+.main-content {
+    margin-left: 280px;
+    padding: 40px;
+    background-color: #f8fafc; /* මෘදු අළු පැහැයක් */
+    min-height: 100vh;
+}
+
+/* --- Welcome Header Section --- */
+.dashboard-header {
+    margin-bottom: 35px;
+    border-left: 5px solid #3498db;
+    padding-left: 20px;
+}
+
+.dashboard-header h2 {
+    font-size: 28px;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+.dashboard-header h2 span {
+    color: #3498db;
+}
+
+.dashboard-header p {
+    color: #64748b;
+    margin-top: 5px;
+}
+
+/* --- Improved Stats Grid --- */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 25px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px; /* වඩාත් වටකුරු මුළු */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); /* ඉතා මෘදු Shadow එකක් */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    transition: all 0.3s ease;
+    border: 1px solid #f1f5f9;
+}
+
+.stat-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 15px 30px rgba(52, 152, 219, 0.1);
+}
+
+.stat-card i {
+    font-size: 30px;
+    padding: 18px;
+    border-radius: 15px;
+    background: #eff6ff;
+    color: #3498db;
+}
+
+.stat-info h3 {
+    font-size: 32px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1;
+}
+
+.stat-info p {
+    color: #94a3b8;
+    font-size: 14px;
+    margin-top: 5px;
+    font-weight: 500;
+}
+
+/* --- Modern Table Section --- */
+.data-section {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
+}
+
+.section-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.section-title h3 {
+    font-size: 20px;
+    color: #1e293b;
+    font-weight: 700;
+}
+
+/* Add New Button */
+.add-btn {
+    background: #3498db;
+    color: #fff;
+    padding: 12px 25px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: 0.3s;
+    box-shadow: 0 4px 12px rgba(52, 152, 219, 0.2);
+}
+
+.add-btn:hover {
+    background: #2980b9;
+    box-shadow: 0 6px 15px rgba(52, 152, 219, 0.3);
+}
+
+/* Table Styling */
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 10px; /* පේළි අතර ඉඩ තැබීමට */
+}
+
+th {
+    text-align: left;
+    padding: 15px 20px;
+    background: #f8fafc;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+td {
+    padding: 15px 20px;
+    background: #fff;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 15px;
+}
+
+/* පළමු සහ අවසාන TD වල වටකුරු මුළු */
+td:first-child { border-left: 1px solid #f1f5f9; border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
+td:last-child { border-right: 1px solid #f1f5f9; border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
+
+/* Action Icons */
+.edit-link i { color: #3498db; margin-right: 15px; font-size: 18px; }
+.delete-link i { color: #ef4444; font-size: 18px; }
+
+/* Empty Message Styling */
+.empty-msg {
+    text-align: center;
+    padding: 50px !important;
+    color: #94a3b8;
+    font-style: italic;
+}

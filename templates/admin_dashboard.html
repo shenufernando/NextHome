@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | NextHome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='admin_style.css') }}">
+</head>
+<body>
+
+    <div class="sidebar">
+        <div class="sidebar-header">Next<span>Home</span></div>
+        <div class="sidebar-menu">
+            <a href="/admin_dashboard" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="/manage_users"><i class="fas fa-users"></i> Manage Users</a>
+            <a href="#"><i class="fas fa-building"></i> Properties</a>
+            <a href="#"><i class="fas fa-cog"></i> Settings</a>
+            <a href="/logout" style="margin-top: 50px; color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h2>Admin Dashboard Overview</h2>
+            <p>Welcome back, <strong>Admin</strong></p>
+        </div>
+
+        <div class="header-stats">
+            <div class="stat-card">
+                <i class="fas fa-user-friends"></i>
+                <div>
+                    <h3>{{ user_count }}</h3>
+                    <p>Total Users</p>
+                </div>
+            </div>
+            </div>
+
+        <div class="data-section">
+            <h3 style="color: #2c3e50;">Recently Registered Users</h3>
+            </div>
+    </div>
+
+</body>
+</html>
