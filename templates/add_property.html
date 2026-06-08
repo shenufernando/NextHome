@@ -1,59 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Property | NextHome</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <title>Add New Property</title>
 </head>
-<body class="auth-wrapper">
-    <div class="form-box">
-        <h2>Add New Post</h2>
+<body>
 
-  
+    <div class="form-wrapper">
+        <div class="form-title">Add New Property</div>
+        <div class="form-subtitle">Fill out the form below to list your property on NextHome.</div>
 
-  
-    <form action="{{ url_for('add_property') }}" method="POST" enctype="multipart/form-data">
-        <div class="input-group">
-            <input type="text" name="title" placeholder="Property Title (ex: Luxury Villa in Galle)" required>
-        </div>
-        
-        <div class="input-group">
-            <select name="category" required>
-                <option value="" disabled selected>Select Category</option>
-                <option value="House">House</option>
-                <option value="Land">Land</option>
-                <option value="Apartment">Apartment</option>
-                <option value="Commercial">Commercial</option>
-            </select>
-        </div>
+        <form action="/add_property" method="POST" enctype="multipart/form-data">
+            
+            <div class="form-section">
+                <div class="section-title"><i class="fas fa-info-circle"></i> Basic Information</div>
+                <div class="form-grid">
+                    <div class="form-group full-width">
+                        <label>Property Title</label>
+                        <input type="text" name="title" id="propertyTitleInput" placeholder="e.g., Modern 3 Bedroom House for Sale in Malabe" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Description</label>
+                        <textarea name="description" rows="5" placeholder="Detailed description about your property..." required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (LKR)</label>
+                        <input type="number" name="price" placeholder="e.g., 25000000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Contact Number</label>
+                        <input type="text" name="contact_phone" placeholder="e.g., 0771234567" required>
+                    </div>
+                </div>
+            </div>
 
-        <div class="input-group">
-            <input type="text" name="location" placeholder="Location (City)" required>
-        </div>
+            <div class="form-section">
+                <div class="section-title"><i class="fas fa-sliders-h"></i> Specifications & Location</div>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Property Type</label>
+                        <select name="type" id="propertyType" onchange="toggleFields()" required>
+                            <option value="house">House</option>
+                            <option value="apartment">Apartment</option>
+                            <option value="land">Land</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Purpose</label>
+                        <select name="purpose" required>
+                            <option value="sale">For Sale</option>
+                            <option value="rent">For Rent</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Location / City</label>
+                        <input type="text" name="location" placeholder="e.g., Malabe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Land/Area Size</label>
+                        <input type="text" name="area_size" placeholder="e.g., 10 Perches or 2500 Sqft" required>
+                    </div>
+                    <div class="form-group residential-fields">
+                        <label>Bedrooms</label>
+                        <input type="number" name="bedrooms" value="0" min="0">
+                    </div>
+                    <div class="form-group residential-fields">
+                        <label>Bathrooms</label>
+                        <input type="number" name="bathrooms" value="0" min="0">
+                    </div>
+                </div>
+            </div>
 
-        <div class="input-group">
-            <input type="number" name="price" placeholder="Price (Rs.)" required>
-        </div>
+            <div class="form-section">
+                <div class="section-title"><i class="fas fa-concierge-bell"></i> Amenities / Features</div>
+                <div class="amenities-grid">
+                    <label class="amenity-item"><input type="checkbox" name="amenities" value="Electricity"> Main Electricity</label>
+                    <label class="amenity-item"><input type="checkbox" name="amenities" value="Tap Water"> Tap Water</label>
+                    <label class="amenity-item"><input type="checkbox" name="amenities" value="A/C"> Air Conditioning (A/C)</label>
+                    <label class="amenity-item"><input type="checkbox" name="amenities" value="Swimming Pool"> Swimming Pool</label>
+                    <label class="amenity-item"><input type="checkbox" name="amenities" value="Parking"> Vehicle Parking</label>
+                    <label class="amenity-item"><input type="checkbox" name="amenities" value="Security"> 24/7 Security</label>
+                </div>
+            </div>
 
-        <div class="input-group">
-            <textarea name="description" placeholder="Write more details about your property..." rows="4" required></textarea>
-        </div>
+            <div class="form-section">
+                <div class="section-title"><i class="fas fa-box-open"></i> Select Listing Package</div>
+                <div class="package-grid">
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="plan" value="basic" class="package-radio" checked onchange="handlePackageChange()">
+                        <div class="package-card">
+                            <h4>Basic Package</h4>
+                            <p>Free Publish for 14 Days. Max 3 Photos allowed.</p>
+                            <span class="price-tag">FREE</span>
+                        </div>
+                    </label>
 
-        <div class="input-group">
-            <input type="date" name="expiry_date" required title="Post Expiry Date">
-        </div>
+                    <label style="cursor: pointer;">
+                        <input type="radio" name="plan" value="premium" class="package-radio" onchange="handlePackageChange()">
+                        <div class="package-card">
+                            <h4>Premium Package</h4>
+                            <p>Featured Badge. Top Search Results. Max 6 Photos allowed.</p>
+                            <span class="price-tag">Rs. 3000</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
 
-        <div class="input-group">
-            <label style="font-size: 13px; color: #777;">Upload Property Image:</label>
-            <input type="file" name="image" accept="image/*" required>
-        </div>
+            <div class="form-section">
+                <div class="section-title"><i class="fas fa-images"></i> Upload Property Photos</div>
+                <div class="image-upload-box">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                    <p style="margin:0 0 10px 0; font-weight:500;">Select photos to upload</p>
+                    
+                    <div class="gallery-inputs">
+                        <div class="form-group"><label>Main Photo *</label><input type="file" name="image1" accept="image/*" required></div>
+                        <div class="form-group"><label>Photo 2</label><input type="file" name="image2" accept="image/*"></div>
+                        <div class="form-group"><label>Photo 3</label><input type="file" name="image3" accept="image/*"></div>
+                        
+                        <div class="form-group premium-gallery"><label>Photo 4 (Premium)</label><input type="file" name="image4" accept="image/*"></div>
+                        <div class="form-group premium-gallery"><label>Photo 5 (Premium)</label><input type="file" name="image5" accept="image/*"></div>
+                        <div class="form-group premium-gallery"><label>Photo 6 (Premium)</label><input type="file" name="image6" accept="image/*"></div>
+                    </div>
+                </div>
+            </div>
 
-        <button type="submit" class="auth-btn">Proceed to Payment</button>
-        <div class="form-footer">
-            <a href="{{ url_for('seller_dashboard') }}">Cancel and Back</a>
-        </div>
-    </form>
-</div>
+            <button type="submit" class="btn-submit-post" id="submitBtn">Request Approval (FREE)</button>
         </form>
     </div>
+
+
+    
+
+
+    <script src="{{ url_for('static', filename='property_form.js') }}"></script>
 </body>
 </html>
+

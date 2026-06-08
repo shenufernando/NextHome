@@ -1,0 +1,15 @@
+<div class="admin-analytics">
+    <div class="card">Basic Approved: {{ ba }}</div>
+    <div class="card">Basic Rejected: {{ br }}</div>
+    <div class="card">Premium Approved: {{ pa }}</div>
+    <div class="card">Premium Rejected: {{ pr }}</div>
+</div>
+
+{% for post in properties %}
+  <p>{{ post.title }} [{{ post.plan }}] - Status: {{ post.status }}</p>
+  {% if post.status == 'pending' %}
+     <a href="/admin_action/{{ post.id }}/approve">Approve</a> | 
+     <a href="/admin_action/{{ post.id }}/reject">Reject</a>
+  {% endif %}
+  <a href="/delete_property/{{ post.id }}">Delete</a>
+{% endfor %}
