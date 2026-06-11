@@ -72,7 +72,7 @@
                     <tbody>
                         {% for post in posts %}
                         <tr>
-                            <td><img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" width="60" style="border-radius: 5px;"></td>
+                            <td><img src="{{ url_for('static', filename='uploads/' + post.image_url) }}" width="60" style="border-radius: 5px;"></td>
                             <td>
                                 <strong>{{ post.title }}</strong><br>
                                 <small style="color: #7f8c8d;">Package: {{ post.plan | upper }}</small>
@@ -113,6 +113,7 @@
                                 <a href="#" class="edit-link" title="Edit"><i class="fas fa-edit"></i></a>
                                 <a href="/delete_property/{{ post.id }}" class="delete-link" title="Delete" onclick="return confirm('Are you sure you want to delete this post?');" style="color: #e74c3c; margin-left: 10px;"><i class="fas fa-trash"></i></a>
                             </td>
+                        </tr>
                         </tr>
                         {% else %}
                         <tr>

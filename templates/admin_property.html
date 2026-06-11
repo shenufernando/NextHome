@@ -1,15 +1,127 @@
-<div class="admin-analytics">
-    <div class="card">Basic Approved: {{ ba }}</div>
-    <div class="card">Basic Rejected: {{ br }}</div>
-    <div class="card">Premium Approved: {{ pa }}</div>
-    <div class="card">Premium Rejected: {{ pr }}</div>
-</div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Properties</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="admin-body">
 
-{% for post in properties %}
-  <p>{{ post.title }} [{{ post.plan }}] - Status: {{ post.status }}</p>
-  {% if post.status == 'pending' %}
-     <a href="/admin_action/{{ post.id }}/approve">Approve</a> | 
-     <a href="/admin_action/{{ post.id }}/reject">Reject</a>
-  {% endif %}
-  <a href="/delete_property/{{ post.id }}">Delete</a>
-{% endfor %}
+    <div class="admin-wrapper">
+        <nav class="sidebar">
+            <div class="sidebar-header">Next<span>Home</span></div>
+           <div class="sidebar-menu">
+    <a href="{{ url_for('admin_bp.admin_dashboard') }}" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+    <a href="{{ url_for('admin_bp.manage_users') }}"><i class="fas fa-users"></i> Manage Users</a>
+    <a href="{{ url_for('admin_bp.admin_properties') }}"><i class="fas fa-building"></i> Properties</a> <a href="{{ url_for('admin_bp.settings') }}"><i class="fas fa-cog"></i> Settings</a>
+    <a href="{{ url_for('admin_bp.logout') }}" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+</div>
+        </nav>
+
+        <main class="main-content">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div style="padding: 12px; margin-bottom: 20px; border-radius: 4px; background-color: {% if category == 'success' %}#2ecc71{% elif category == 'danger' %}#e74c3c{% else %}#f39c12{% endif %}; color: white;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
+
+            <header class="dashboard-header">
+                <h2>Property Management <span>Overview</span></h2>
+                <p>Review, approve, reject, or remove system listings.</p>
+            </header>
+
+            <div class="admin-stats-grid">
+                <div class="stat-card active-card">
+                    <i class="fas fa-check-circle"></i>
+                    <div class="stat-info">
+                        <h3>{{ active_count }}</h3>
+                        <p>Active Listings</p>
+                    </div>
+                </div>
+                <div class="stat-card reject-card">
+                    <i class="fas fa-times-circle"></i>
+                    <div class="stat-info">
+                        <h3>{{ reject_count }}</h3>
+                        <p>Rejected Listings</p>
+                    </div>
+                </div>
+                <div class="stat-card pending-card">
+                    <i class="fas fa-hourglass-half"></i>
+                    <div class="stat-info">
+                        <h3>{{ pending_count }}</h3>
+                        <p>Pending Review</p>
+                    </div>
+                </div>
+            </div>
+
+            <section class="data-section">
+                <div class="section-title">
+                    <h3>All Submitted Properties</h3>
+                </div>
+                
+                <table class="property-table">
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Details</th>
+                            <th>Seller</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for prop in properties %}
+                        <tr>
+                            <td>
+                                <img src="{{ url_for('static', filename='uploads/' + prop.image_url) }}" class="table-prop-img">
+                            </td>
+                            <td>
+                                <strong class="prop-title">{{ prop.title }}</strong><br>
+                                <span class="prop-badge">{{ prop.type | upper }}</span>
+                            </td>
+                            <td>{{ prop.name }}</td>
+                            <td>Rs. {{ prop.price }}</td>
+                            <td>
+                                <span class="status-badge status-{{ prop.status | lower }}">
+                                    {{ prop.status }}
+                                </span>
+                            </td>
+                            <td>
+                                <div class="action-buttons-flex">
+                                    {% if prop.status == 'pending' or prop.status == 'Pending_Approval' %}
+                                    <form action="{{ url_for('admin_bp.approve_property', property_id=prop.id) }}" method="POST" class="inline-form action-approve">
+                                        <button type="submit" class="btn-action btn-approve" title="Approve"><i class="fas fa-check"></i></button>
+                                    </form>
+                                    <form action="{{ url_for('admin_bp.reject_property', property_id=prop.id) }}" method="POST" class="inline-form action-reject">
+                                        <button type="submit" class="btn-action btn-reject" title="Reject"><i class="fas fa-ban"></i></button>
+                                    </form>
+                                    {% endif %}
+                                    
+                                    <form action="{{ url_for('admin_bp.delete_property', property_id=prop.id) }}" method="POST" class="inline-form action-delete" onsubmit="return confirm('Are you sure you want to delete this property completely?');">
+                                        <button type="submit" class="btn-action btn-delete" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="6" style="text-align: center; padding: 30px; color: #7f8c8d;">No properties found in the database.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='admin_script.js') }}"></script>
+</body>
+</html>

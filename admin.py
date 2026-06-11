@@ -22,8 +22,8 @@ def admin_dashboard():
         cursor.execute('SELECT COUNT(*) as count FROM properties')
         property_count = cursor.fetchone()['count']
         
-        # Approve කිරීමට බලාපොරොත්තුවෙන් පවතින (Pending) Properties ලැයිස්තුව
-        cursor.execute("SELECT * FROM properties WHERE status = 'pending' ORDER BY id DESC")
+        # Basic (pending) සහ Premium (Pending_Approval) පෝස්ට් දෙවර්ගයම මෙතනින් රීඩ් කරයි.
+        cursor.execute("SELECT * FROM properties WHERE status IN ('pending', 'Pending_Approval') ORDER BY id DESC")
         pending_properties = cursor.fetchall()
         
         cursor.close()
@@ -34,36 +34,6 @@ def admin_dashboard():
                                property_count=property_count,
                                pending_properties=pending_properties)
     
-    return redirect(url_for('login'))
-
-
-# --- ⭐ APPROVE PROPERTY ROUTE ---
-@admin_bp.route('/approve_property/<int:id>')
-def approve_property(id):
-    if 'loggedin' in session and session['role'] == 'admin':
-        from app import mysql
-        cursor = mysql.connection.cursor()
-        # Status එක 'Approved' ලෙස යාවත්කාලීන කිරීම
-        cursor.execute("UPDATE properties SET status = 'Approved' WHERE id = %s", (id,))
-        mysql.connection.connection.commit()
-        cursor.close()
-        flash("Property approved and published successfully!", "success")
-        return redirect(url_for('admin_bp.admin_dashboard'))
-    return redirect(url_for('login'))
-
-
-# --- ⭐ REJECT / DELETE PROPERTY ROUTE ---
-@admin_bp.route('/reject_property/<int:id>')
-def reject_property(id):
-    if 'loggedin' in session and session['role'] == 'admin':
-        from app import mysql
-        cursor = mysql.connection.cursor()
-        # සදහටම ඩේටාබේස් එකෙන් ඉවත් කිරීම හෝ status එක 'Rejected' කිරීම (මෙහිදී delete කර ඇත)
-        cursor.execute("DELETE FROM properties WHERE id = %s", (id,))
-        mysql.connection.connection.commit()
-        cursor.close()
-        flash("Property listing rejected and removed.", "danger")
-        return redirect(url_for('admin_bp.admin_dashboard'))
     return redirect(url_for('login'))
 
 
@@ -189,5 +159,92 @@ def settings():
             
         cursor.close()
         return render_template('admin_settings.html', admin_info=admin_info)
+        
+    return redirect(url_for('login'))
+
+
+# =======================================================
+# 🏢 ADMIN PROPERTIES MANAGEMENT (FIXED & LOGGED IN CHECKED)
+# =======================================================
+
+# --- 1. VIEW ALL PROPERTIES & STATS ---
+@admin_bp.route('/admin/properties')
+def admin_properties():
+    if 'loggedin' in session and session['role'] == 'admin':
+        from app import mysql
+        cursor = mysql.connection.cursor()
+        
+        # 📊 සංඛ්‍යාලේඛන ලබා ගැනීම
+        cursor.execute("SELECT COUNT(*) FROM properties WHERE status = 'Approved'")
+        active_count = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM properties WHERE status = 'Rejected'")
+        reject_count = cursor.fetchone()[0]
+        
+        cursor.execute("SELECT COUNT(*) FROM properties WHERE status IN ('pending', 'Pending_Approval')")
+        pending_count = cursor.fetchone()[0]
+
+        # 📋 සියලුම දේපළ විස්තර (Seller ගේ නමත් සමඟ) ලබා ගැනීම
+        sql = """SELECT p.id, p.title, p.price, p.type, p.status, p.expiry_date, p.image_url, u.name 
+                 FROM properties p 
+                 JOIN users u ON p.seller_id = u.id 
+                 ORDER BY p.id DESC"""
+        cursor.execute(sql)
+        
+        columns = [col[0] for col in cursor.description]
+        properties = [dict(zip(columns, row)) for row in cursor.fetchall()]
+        
+        cursor.close()
+        
+        return render_template('admin_property.html', 
+                               properties=properties, 
+                               active_count=active_count, 
+                               reject_count=reject_count, 
+                               pending_count=pending_count)
+                               
+    return redirect(url_for('login'))
+
+
+# --- 2. APPROVE PROPERTY ROUTE ---
+@admin_bp.route('/admin/property/approve/<int:property_id>', methods=['POST'])
+def approve_property(property_id):
+    if 'loggedin' in session and session['role'] == 'admin':
+        from app import mysql
+        cursor = mysql.connection.cursor()
+        cursor.execute("UPDATE properties SET status = 'Approved' WHERE id = %s", (property_id,))
+        mysql.connection.commit()
+        cursor.close()
+        flash('Property approved successfully!', 'success')
+        return redirect(url_for('admin_bp.admin_properties'))
+        
+    return redirect(url_for('login'))
+
+
+# --- 3. REJECT PROPERTY ROUTE ---
+@admin_bp.route('/admin/property/reject/<int:property_id>', methods=['POST'])
+def reject_property(property_id):
+    if 'loggedin' in session and session['role'] == 'admin':
+        from app import mysql
+        cursor = mysql.connection.cursor()
+        cursor.execute("UPDATE properties SET status = 'Rejected' WHERE id = %s", (property_id,))
+        mysql.connection.commit()
+        cursor.close()
+        flash('Property rejected successfully!', 'danger')
+        return redirect(url_for('admin_bp.admin_properties'))
+        
+    return redirect(url_for('login'))
+
+
+# --- 4. DELETE PROPERTY ROUTE ---
+@admin_bp.route('/admin/property/delete/<int:property_id>', methods=['POST'])
+def delete_property(property_id):
+    if 'loggedin' in session and session['role'] == 'admin':
+        from app import mysql
+        cursor = mysql.connection.cursor()
+        cursor.execute("DELETE FROM properties WHERE id = %s", (property_id,))
+        mysql.connection.commit()
+        cursor.close()
+        flash('Property deleted from system!', 'warning')
+        return redirect(url_for('admin_bp.admin_properties'))
         
     return redirect(url_for('login'))

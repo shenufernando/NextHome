@@ -74,3 +74,38 @@ document.addEventListener("DOMContentLoaded", function() {
     toggleFields();
     handlePackageChange();
 });
+
+// admin property
+document.addEventListener("DOMContentLoaded", function() {
+    
+    // 1. Approve කිරීමට පෙර තහවුරු කිරීම
+    const approveForms = document.querySelectorAll('.action-approve');
+    approveForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if(!confirm("Are you sure you want to APPROVE this property listing? It will go live immediately.")) {
+                e.preventDefault(); // එබුව ක්‍රියාව අවලංගු කරයි
+            }
+        });
+    });
+
+    // 2. Reject කිරීමට පෙර තහවුරු කිරීම
+    const rejectForms = document.querySelectorAll('.action-reject');
+    rejectForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if(!confirm("Are you sure you want to REJECT this property?")) {
+                e.preventDefault();
+            }
+        });
+    });
+
+    // 3. Delete කිරීමට පෙර තහවුරු කිරීම
+    const deleteForms = document.querySelectorAll('.action-delete');
+    deleteForms.forEach(form => {
+        form.addEventListener('submit', function(e) {
+            if(!confirm("⚠️ WARNING: Are you sure you want to PERMANENTLY DELETE this property from the database? This cannot be undone!")) {
+                e.preventDefault();
+            }
+        });
+    });
+
+});
