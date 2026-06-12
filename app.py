@@ -48,6 +48,7 @@ def signup():
     return render_template('signup.html')
 
 # --- LOGIN LOGIC ---
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -71,8 +72,12 @@ def login():
             session['name'] = account['name']
             session['role'] = account['role']
             
+            # 🔄 රෝල් එක අනුව අදාළ ඩෑෂ්බෝඩ් එකට යැවීම
             if account['role'] == 'seller':
                 return redirect(url_for('seller_dashboard'))
+            elif account['role'] == 'seeker':
+                # 🎯 මෙතනට Seeker Blueprint එකේ ලින්ක් එක එකතු කළා:
+                return redirect(url_for('seeker_bp.seeker_dashboard'))
             else:
                 return redirect(url_for('home'))
         else:
@@ -189,8 +194,16 @@ def logout():
     return redirect(url_for('login'))
 
 # --- BLUEPRINT REGISTRATION ---
+
+# 1. Admin Blueprint එක (දැනටමත් තිබුණ එක)
 from admin import admin_bp
 app.register_blueprint(admin_bp)
 
+# 2. Seeker Blueprint එක (අලුතින් එකතු කළ යුත්තේ මේ විදිහටයි)
+from seeker import seeker_bp, init_mysql
+init_mysql(mysql)  # app.py එකේ තියෙන mysql object එක seeker එකට පාස් කරනවා
+app.register_blueprint(seeker_bp)
+
+# 🚨 සේරටම පස්සේ තමයි ඇප් එක රන් වෙන්න ඕනේ!
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Property - NextHome</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/edit_property.css') }}">
+     
+</head>
+<body>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8 form-container">
+            <h2 class="form-title">Edit Your Property Advertisement</h2>
+            <p class="form-subtitle">You can update your property details here. Leaving the image field empty will keep your current image.</p>
+            <hr>
+
+            <form action="{{ url_for('edit_property_seller', post_id=property.id) }}" method="POST" enctype="multipart/form-data">
+                
+                <div class="mb-3">
+                    <label for="title" class="form-label custom-label">Property Title</label>
+                    <input type="text" class="form-control custom-input" id="title" name="title" value="{{ property.title }}" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-label custom-label">Description</label>
+                    <textarea class="form-control custom-input" id="description" name="description" rows="4" required>{{ property.description }}</textarea>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label for="price" class="form-label custom-label">Price (LKR)</label>
+                        <input type="number" class="form-control custom-input" id="price" name="price" value="{{ property.price }}" required>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label for="contact_phone" class="form-label custom-label">Contact Number</label>
+                        <input type="text" class="form-control custom-input" id="contact_phone" name="contact_phone" value="{{ property.contact_phone }}" required>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label for="location" class="form-label custom-label">Location / City</label>
+                    <input type="text" class="form-control custom-input" id="location" name="location" value="{{ property.location }}" required>
+                </div>
+
+                <div class="mb-4">
+                    <label for="image1" class="form-label custom-label">Property Image (Optional)</label>
+                    <input type="file" class="form-control custom-input" id="image1" name="image1" accept="image/*">
+                    
+                    <div class="current-image-box">
+                        <small class="text-muted d-block mb-2">Current Image:</small>
+                        <img src="{{ url_for('static', filename='uploads/' + property.image_url) }}" alt="Current Image" class="img-thumbnail current-prop-img">
+                    </div>
+                </div>
+
+                <div class="d-grid gap-2 d-md-flex justify-content-md-endbutton-group">
+                    <a href="{{ url_for('seller_dashboard') }}" class="btn btn-cancel me-md-2" type="button">Cancel</a>
+                    <button class="btn btn-save px-4" type="submit">Save Changes</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -23,14 +23,15 @@
 
         <main class="main-content">
             {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div style="padding: 12px; margin-bottom: 20px; border-radius: 4px; background-color: {% if category == 'success' %}#2ecc71{% elif category == 'danger' %}#e74c3c{% else %}#f39c12{% endif %}; color: white;">
-                            {{ message }}
-                        </div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{% if category == 'error' %}danger{% else %}{{ category }}{% endif %} alert-dismissible fade show text-center mb-4" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
 
             <header class="dashboard-header">
                 <h2>Property Management <span>Overview</span></h2>

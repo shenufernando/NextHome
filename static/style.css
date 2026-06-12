@@ -1559,3 +1559,148 @@ td { padding: 15px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size:
 
 .btn-delete { background: #e74c3c; color: white; }
 .btn-delete:hover { background: #c0392b; transform: scale(1.05); }
+
+
+
+
+
+/* seeker dashboarad */
+/* --- GENERAL STYLES --- */
+body {
+    background-color: #f8f9fa;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #333;
+}
+
+/* --- NAVBAR CUSTOMIZATION --- */
+.bg-dark-custom {
+    background-color: #1a1d20 !important;
+    border-bottom: 3px solid #ffc107;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 0.5px;
+}
+
+/* --- SEARCH BANNER & FORM --- */
+.search-banner {
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.7)), 
+                url('https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-4.0.3') no-repeat center center;
+    background-size: cover;
+    padding: 80px 0;
+    margin-bottom: 40px;
+}
+
+.search-form {
+    max-width: 900px;
+    margin: 0 auto;
+    border: 1px solid #eaeaea;
+}
+
+.search-form .input-group-text {
+    border-right: none;
+}
+
+.search-form .form-control, 
+.search-form .form-select {
+    height: 50px;
+}
+
+.search-form .btn-warning {
+    height: 50px;
+    transition: all 0.3s ease;
+}
+
+.search-form .btn-warning:hover {
+    background-color: #e0a800;
+    transform: translateY(-2px);
+}
+
+/* --- SECTION TITLE --- */
+.section-title {
+    font-weight: 700;
+    color: #2c3e50;
+    position: relative;
+    padding-bottom: 10px;
+}
+
+/* --- PROPERTY CARDS --- */
+.property-card {
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: #fff;
+}
+
+.property-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.12) !important;
+}
+
+.property-img {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.property-card:hover .property-img {
+    transform: scale(1.03);
+}
+
+/* --- PREMIUM CARD SPECIFIC --- */
+.premium-card {
+    border: 2px solid #ffc107;
+    position: relative;
+}
+
+.premium-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    z-index: 10;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.15);
+}
+
+/* --- TEXT UTILITIES --- */
+.text-truncate-2 {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+    
+    /* 🎯 මේ විදිහට ලියන්න, එතකොට Warning එක නැති වෙලාම යනවා */
+    line-clamp: 2;
+    -webkit-line-clamp: 2; 
+    
+    height: 48px; /* Line-height එක අනුව සමබරව තියාගන්න */
+}
+
+
+/* --- MODAL CUSTOMIZATION --- */
+.modal-content {
+    border: none;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #eedede;
+}
+
+/* --- FOOTER --- */
+footer {
+    background-color: #1a1d20;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+}
+/* details modal එක ඇතුළත scroll වෙන්න CSS */
+.modal-body {
+    max-height: 65vh; /* modal එකේ උස screen එකේ උසින් 65% කට සීමා කරනවා */
+    overflow-y: auto; /* content එක වැඩි නම් scrollbar එකක් එනවා */
+}

@@ -4,66 +4,240 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Seeker Dashboard - NextHome</title>
-   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body class="admin-body">
+<body>
 
-    <div class="admin-wrapper">
-        <nav class="sidebar">
-            <div class="sidebar-header">Next<span>Home</span></div>
-            <div class="sidebar-menu">
-                <a href="{{ url_for('seeker_dashboard') }}" class="active"><i class="fas fa-search"></i> Browse Properties</a>
-                <a href="#"><i class="fas fa-heart"></i> My Saved</a>
-                <a href="#"><i class="fas fa-reply"></i> Inbox / Replies</a>
-                <a href="{{ url_for('profile_settings') }}"><i class="fas fa-user-cog"></i> Profile Settings</a>
-                <a href="{{ url_for('logout') }}" style="color: #e74c3c;"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show text-center m-0" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark-custom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="#">Next<span class="text-warning">Home</span></a>
+            <div class="d-flex align-items-center">
+                <span class="navbar-text me-3 text-white">Welcome, <strong class="text-warning">{{ name }}</strong> (Seeker)</span>
+                <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
-        </nav>
+        </div>
+    </nav>
 
-        <main class="main-content">
-            <header class="dashboard-header">
-                <h2>Welcome back, <span>{{ name }}!</span></h2>
-                <p>Find your dream home or property from here.</p>
-            </header>
+    <div class="search-banner text-center text-white">
+        <div class="container">
+            <h1 class="fw-bold mb-3">Find Your Dream Property</h1>
+            <p class="lead mb-4">Discover houses, apartments, and lands for sale across Sri Lanka.</p>
+            
+            <form action="#" method="GET" class="search-form p-4 shadow bg-white rounded">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent text-muted"><i class="fas fa-home"></i></span>
+                            <select class="form-select border-start-0" name="type">
+                                <option value="">All Types</option>
+                                <option value="House">House</option>
+                                <option value="Apartment">Apartment</option>
+                                <option value="Land">Land</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-transparent text-muted"><i class="fas fa-map-marker-alt"></i></span>
+                            <input type="text" class="form-control border-start-0" name="location" placeholder="Enter City (e.g. Colombo)">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-warning w-100 fw-bold"><i class="fas fa-search"></i> Search Properties</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 
-            <section class="data-section" style="background: transparent; box-shadow: none; padding: 0; margin-top: 30px;">
-                <h3 style="margin-bottom: 20px; color: #2c3e50;"><i class="fas fa-building"></i> Available Properties</h3>
-                
-                <div class="property-grid">
-                    {% for post in posts %}
-                        <div class="property-card">
-                            
-                            {% if post.plan == 'premium' %}
-                                <span class="featured-badge"><i class="fas fa-star"></i> FEATURED</span>
-                            {% endif %}
-
-                            <img src="{{ url_for('static', filename='uploads/' + post.image_file) }}" class="property-card-img">
-                            
-                            <div class="property-card-body">
-                                <div>
-                                    <h4 class="property-card-title">{{ post.title }}</h4>
-                                    <p class="property-card-price">Rs. {{ post.price }}</p>
-                                    <p class="property-card-location"><i class="fas fa-map-marker-alt"></i> {{ post.location }}</p>
-                                    <span class="property-card-type">{{ post.type }}</span>
-                                </div>
-                                
-                                <div class="property-card-footer">
-                                    <a href="#" class="view-details-btn">View Details</a>
+    <div class="container my-5">
+        
+        <h3 class="section-title mb-4"><i class="fas fa-crown text-warning"></i> Premium Featured Properties</h3>
+        <div class="row g-4 mb-5">
+            {% set premium_count = namespace(value=0) %}
+            {% for post in properties %}
+                {% if post.plan == 'premium' %}
+                    {% set premium_count.value = premium_count.value + 1 %}
+                    <div class="col-md-4">
+                        <div class="card property-card premium-card h-100 shadow-sm">
+                            <span class="badge bg-warning text-dark premium-badge"><i class="fas fa-star"></i> PREMIUM</span>
+                            <img src="{{ url_for('static', filename='uploads/' + post.image_url) }}" class="card-img-top property-img" alt="Property Image">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold text-dark mb-1">{{ post.title }}</h5>
+                                <p class="text-muted small mb-2"><i class="fas fa-map-marker-alt text-danger"></i> {{ post.location }}</p>
+                                <h4 class="text-primary fw-bold mb-3">LKR {{ "{:,.2f}".format(post.price | float) }}</h4>
+                                <p class="card-text text-secondary text-truncate-2 mb-4">{{ post.description }}</p>
+                                <div class="mt-auto d-grid gap-2">
+                                    <button class="btn btn-warning fw-bold text-dark mb-2" data-bs-toggle="modal" data-bs-target="#detailsModal{{ post.id }}">
+                                        View Details
+                                    </button>
+                                    <button class="btn btn-outline-dark fw-bold" data-bs-toggle="modal" data-bs-target="#msgModal{{ post.id }}">
+                                        <i class="fas fa-envelope"></i> Message Seller
+                                    </button>
                                 </div>
                             </div>
                         </div>
-                    {% else %}
-                        <div class="no-properties">
-                            <i class="fas fa-folder-open"></i>
-                            <p>No properties available at the moment.</p>
+                    </div>
+
+                    <div class="modal fade" id="detailsModal{{ post.id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold text-dark">{{ post.title }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{ url_for('static', filename='uploads/' + post.image_url) }}" class="img-fluid rounded mb-3 w-100" style="max-height: 400px; object-fit: cover;" alt="Property Image">
+                                    <h4 class="text-primary fw-bold mb-3">Price: LKR {{ "{:,.2f}".format(post.price | float) }}</h4>
+                                    <p class="mb-2"><strong><i class="fas fa-map-marker-alt text-danger"></i> Location:</strong> {{ post.location }}</p>
+                                    <p class="mb-2"><strong><i class="fas fa-tags text-secondary"></i> Type:</strong> {{ post.type }}</p>
+                                    <p class="mb-3"><strong><i class="fas fa-phone-alt text-success"></i> Contact Seller:</strong> <a href="tel:{{ post.contact_phone }}" class="text-decoration-none fw-bold text-success">{{ post.contact_phone }}</a></p>
+                                    <hr>
+                                    <h6 class="fw-bold text-secondary">Description:</h6>
+                                    <p class="text-dark" style="white-space: pre-line;">{{ post.description }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
                         </div>
-                    {% endfor %}
+                    </div>
+
+                    <div class="modal fade" id="msgModal{{ post.id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">Inquire about: {{ post.title }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url_for('seeker_bp.send_message', property_id=post.id) }}" method="POST">
+                                    <div class="modal-body">
+                                        <input type="hidden" name="receiver_id" value="{{ post.seller_id }}">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold text-secondary">Your Message to Seller</label>
+                                            <textarea class="form-control" name="message" rows="4" placeholder="Hi, I am interested in this property. Please share more details..." required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-primary bg-dark border-0">Send Message</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if premium_count.value == 0 %}
+                <div class="col-12">
+                    <p class="text-muted bg-light p-3 rounded text-center">No premium properties featured at the moment.</p>
                 </div>
-            </section>
-        </main>
+            {% endif %}
+        </div>
+
+        <hr class="my-5" style="border-top: 2px dashed #ccc;">
+
+        <h3 class="section-title mb-4"><i class="fas fa-building text-secondary"></i> Recent Regular Listings</h3>
+        <div class="row g-4">
+            {% set basic_count = namespace(value=0) %}
+            {% for post in properties %}
+                {% if post.plan == 'basic' or post.plan is not defined or not post.plan %}
+                    {% set basic_count.value = basic_count.value + 1 %}
+                    <div class="col-md-4">
+                        <div class="card property-card h-100 shadow-sm">
+                            <img src="{{ url_for('static', filename='uploads/' + post.image_url) }}" class="card-img-top property-img" alt="Property Image">
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title fw-bold text-dark mb-1">{{ post.title }}</h5>
+                                <p class="text-muted small mb-2"><i class="fas fa-map-marker-alt text-secondary"></i> {{ post.location }}</p>
+                                <h4 class="text-success fw-bold mb-3">LKR {{ "{:,.2f}".format(post.price | float) }}</h4>
+                                <p class="card-text text-secondary text-truncate-2 mb-4">{{ post.description }}</p>
+                                <div class="mt-auto d-grid gap-2">
+                                    <button class="btn btn-outline-primary fw-bold mb-2" data-bs-toggle="modal" data-bs-target="#detailsModal{{ post.id }}">
+                                        View Details
+                                    </button>
+                                    <button class="btn btn-outline-secondary fw-bold" data-bs-toggle="modal" data-bs-target="#msgModal{{ post.id }}">
+                                        <i class="fas fa-envelope"></i> Message Seller
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="detailsModal{{ post.id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-lg modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold text-dark">{{ post.title }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <img src="{{ url_for('static', filename='uploads/' + post.image_url) }}" class="img-fluid rounded mb-3 w-100" style="max-height: 400px; object-fit: cover;" alt="Property Image">
+                                    <h4 class="text-success fw-bold mb-3">Price: LKR {{ "{:,.2f}".format(post.price | float) }}</h4>
+                                    <p class="mb-2"><strong><i class="fas fa-map-marker-alt text-secondary"></i> Location:</strong> {{ post.location }}</p>
+                                    <p class="mb-2"><strong><i class="fas fa-tags text-secondary"></i> Type:</strong> {{ post.type }}</p>
+                                    <p class="mb-3"><strong><i class="fas fa-phone-alt text-success"></i> Contact Seller:</strong> <a href="tel:{{ post.contact_phone }}" class="text-decoration-none fw-bold text-success">{{ post.contact_phone }}</a></p>
+                                    <hr>
+                                    <h6 class="fw-bold text-secondary">Description:</h6>
+                                    <p class="text-dark" style="white-space: pre-line;">{{ post.description }}</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade" id="msgModal{{ post.id }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title fw-bold">Inquire about: {{ post.title }}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <form action="{{ url_for('seeker_bp.send_message', property_id=post.id) }}" method="POST">
+                                    <div class="modal-body">
+                                        <input type="hidden" name="receiver_id" value="{{ post.seller_id }}">
+                                        <div class="mb-3">
+                                            <label class="form-label fw-bold text-secondary">Your Message to Seller</label>
+                                            <textarea class="form-control" name="message" rows="4" placeholder="Hi, I am interested in this property. Please share more details..." required></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                        <button type="submit" class="btn btn-success border-0">Send Message</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+            {% if basic_count.value == 0 %}
+                <div class="col-12">
+                    <p class="text-muted bg-light p-3 rounded text-center">No regular properties found.</p>
+                </div>
+            {% endif %}
+        </div>
+
     </div>
 
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        <p class="mb-0">&copy; 2026 NextHome Real Estate Platform. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
