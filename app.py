@@ -85,6 +85,12 @@ def login():
 
     return render_template('login.html')
 
+
+@app.route('/about')
+def about():
+    return render_template('about_us.html')
+
+
 # --- SELLER DASHBOARD ---
 @app.route('/seller_dashboard')
 def seller_dashboard():

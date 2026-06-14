@@ -17,7 +17,7 @@
         <a href="/" class="logo">Next<span>Home</span></a>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a href="#">About Us</a></li>
+           <li><a href="{{ url_for('about') }}">About Us</a></li>
             <li><a href="#">User Manual</a></li>
             <li><a href="#">Contact</a></li>
         </ul>
@@ -56,6 +56,9 @@
         </div>
     </section>
 
+
+
+
     <footer>
         <div class="footer-content">
             <div class="footer-box">
@@ -65,7 +68,7 @@
             <div class="footer-box">
                 <h3>Quick Links</h3>
                 <a href="/">Home</a>
-                <a href="#">About Us</a>
+                <a href="{{ url_for('about') }}">About Us</a>
                 <a href="#">User Manual</a>
                 <a href="#">Contact</a>
             </div>
@@ -80,7 +83,7 @@
             </div>
         </div>
         <div class="copyright">
-            &copy; 2024 NextHome Real Estate. All Rights Reserved.
+            &copy; 2026 NextHome Real Estate. All Rights Reserved.
         </div>
     </footer>
 
