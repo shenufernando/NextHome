@@ -198,6 +198,63 @@ def pay_premium(post_id):
     flash('Payment Successful! Your Premium post is now Live.')
     return redirect(url_for('seller_dashboard'))
 
+
+
+
+
+
+
+
+# --- EDIT PROPERTY ---
+@app.route('/edit_property/<int:property_id>', methods=['GET', 'POST'])
+def edit_property(property_id):
+    if 'id' not in session:
+        return redirect(url_for('login'))
+
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    # 1. යූසර් පේජ් එකට එනකොට (GET) පරණ විස්තර ටික ඩේටාබේස් එකෙන් අරන් පෙන්වනවා
+    if request.method == 'GET':
+        cursor.execute("SELECT * FROM properties WHERE id = %s AND seller_id = %s", (property_id, session['id']))
+        property_data = cursor.fetchone()
+        cursor.close()
+        if property_data:
+            return render_template('edit_property.html', property=property_data)
+        return redirect(url_for('seller_dashboard'))
+
+    # 2. යූසර් විස්තර වෙනස් කරලා බටන් එක එබුවම (POST) ඩේටාබේස් එක Update කරනවා
+    elif request.method == 'POST':
+        title = request.form.get('title')
+        description = request.form.get('description')
+        price = request.form.get('price')
+        contact_phone = request.form.get('contact_phone')
+        location = request.form.get('location')
+
+        cursor.execute("""
+            UPDATE properties 
+            SET title=%s, description=%s, price=%s, contact_phone=%s, location=%s 
+            WHERE id=%s AND seller_id=%s
+        """, (title, description, price, contact_phone, location, property_id, session['id']))
+        
+        mysql.connection.commit()
+        cursor.close()
+        return redirect(url_for('seller_dashboard'))
+
+
+# --- DELETE PROPERTY ---
+@app.route('/delete_property/<int:property_id>')
+def delete_property(property_id):
+    if 'id' not in session:
+        return redirect(url_for('login'))
+        
+    cursor = mysql.connection.cursor()
+    # 🚨 සෙලර්ට අයිති පෝස්ට් එකක්මද කියලා ෂුවර් කරගෙන මකා දමනවා
+    cursor.execute("DELETE FROM properties WHERE id = %s AND seller_id = %s", (property_id, session['id']))
+    mysql.connection.commit()
+    cursor.close()
+    
+    return redirect(url_for('seller_dashboard'))
+
 # --- PROFILE SETTINGS DUMMY ROUTE (To fix BuildError) ---
 @app.route('/profile_settings')
 def profile_settings():
