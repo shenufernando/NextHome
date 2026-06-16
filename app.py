@@ -15,6 +15,9 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'NextHome'
 
+
+
+
 # Image Upload Config
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -90,6 +93,9 @@ def login():
 def about():
     return render_template('about_us.html')
 
+@app.route('/manual')
+def manual():
+    return render_template('user_manual.html')
 
 # --- SELLER DASHBOARD ---
 @app.route('/seller_dashboard')

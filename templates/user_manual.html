@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Manual - NextHome</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333333;
+        }
+        
+        /* 🔵 Sky Blue Brand Colors */
+        .btn-sky-blue {
+            background-color: #2b94d7;
+            color: #ffffff !important;
+            border-radius: 20px;
+            padding: 8px 24px;
+            font-weight: 600;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        .btn-sky-blue:hover {
+            background-color: #1a7bb8;
+            box-shadow: 0 4px 12px rgba(43, 148, 215, 0.3);
+        }
+
+        .text-sky-blue {
+            color: #2b94d7 !important;
+        }
+
+        /* 🧭 Navbar Styling */
+        .navbar-custom {
+            background-color: #ffffff;
+            border-bottom: 1px solid #eaeaea;
+            padding: 15px 0;
+        }
+        .navbar-custom .navbar-brand {
+            font-size: 1.6rem;
+            color: #1e3a5f;
+        }
+        .navbar-custom .nav-link {
+            color: #666666 !important;
+            font-weight: 500;
+            font-size: 0.95rem;
+            margin: 0 10px;
+            transition: color 0.2s ease;
+        }
+        .navbar-custom .nav-link:hover, .navbar-custom .nav-link.active {
+            color: #2b94d7 !important;
+        }
+        .navbar-custom .btn-login {
+            color: #2b94d7 !important;
+            font-weight: 600;
+            margin-right: 20px;
+            text-decoration: none;
+        }
+
+        /* 📘 Manual Hero Header */
+        .manual-hero {
+            background: linear-gradient(135deg, #1a7bb8 0%, #2b94d7 100%);
+            padding: 60px 0;
+        }
+
+        /* 📋 Step Cards Styling */
+        .step-card {
+            background-color: #ffffff;
+            border-radius: 16px;
+            border: none;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+            transition: transform 0.3s ease;
+        }
+        .step-card:hover {
+            transform: translateY(-5px);
+        }
+        .step-number {
+            background-color: #2b94d7;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{{ url_for('home') }}">Next<span class="text-sky-blue">Home</span></a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link active" href="{{ url_for('manual') }}">User Manual</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+                </ul>
+                
+                <div class="d-flex align-items-center">
+                    <a href="{{ url_for('login') }}" class="btn-login">Login</a>
+                    <a href="{{ url_for('signup') }}" class="btn btn-sky-blue">Sign Up</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="manual-hero text-center text-white">
+        <div class="container">
+            <h1 class="fw-bold display-5 mb-2"><i class="fas fa-book-open me-3"></i>User Manual & Guide</h1>
+            <p class="lead text-white-50 fs-5 fw-light">Learn how to easily find, buy, rent, or sell your property on NextHome</p>
+        </div>
+    </div>
+
+    <div class="container my-5 py-3">
+        <div class="row g-4 max-w-600 mx-auto">
+            
+            <div class="col-12">
+                <div class="card step-card p-4">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number me-3 flex-shrink-0">1</div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-2">Create an Account</h4>
+                            <p class="text-muted mb-0">Click on the <strong>Sign Up</strong> button at the top right corner. Fill in your name, email, and choose a secure password to register as either a Buyer or Seller.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card step-card p-4">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number me-3 flex-shrink-0">2</div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-2">Search and Filter Properties</h4>
+                            <p class="text-muted mb-0">Use the main search bar on the Home page to type locations (e.g., Colombo, Kandy). Apply filters for price brackets, property type (House, Apartment, Land), and size to narrow down choices.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card step-card p-4">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number me-3 flex-shrink-0">3</div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-2">Contacting Sellers</h4>
+                            <p class="text-muted mb-0">Once you find a perfect listing, use our **Direct Messaging system** to safely and instantly chat with the verified property owners to schedule visits or negotiate pricing.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card step-card p-4">
+                    <div class="d-flex align-items-start">
+                        <div class="step-number me-3 flex-shrink-0">4</div>
+                        <div>
+                            <h4 class="fw-bold text-dark mb-2">Posting a Property Listing</h4>
+                            <p class="text-muted mb-0">If you are a seller, navigate to your dashboard, click "Add Property," upload high-quality images, specify pricing, and submit. Our admins will verify the control data before it goes live.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <p class="mb-0 small" style="opacity: 0.6;">&copy; 2026 NextHome Real Estate Platform. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
