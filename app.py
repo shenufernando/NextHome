@@ -97,6 +97,10 @@ def about():
 def manual():
     return render_template('user_manual.html')
 
+@app.route('/contact')
+def contact():
+    return render_template('contact.html')
+
 # --- SELLER DASHBOARD ---
 @app.route('/seller_dashboard')
 def seller_dashboard():

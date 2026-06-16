@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - NextHome</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body { font-family: 'Segoe UI', sans-serif; background-color: #f8f9fa; }
+        .text-sky-blue { color: #2b94d7 !important; }
+        .btn-sky-blue { background-color: #2b94d7; color: white; border-radius: 20px; font-weight: 600; border: none; padding: 10px 30px; }
+        .btn-sky-blue:hover { background-color: #1a7bb8; color: white; }
+        .navbar-custom { background-color: #ffffff; border-bottom: 1px solid #eaeaea; padding: 15px 0; }
+        .contact-hero { background: linear-gradient(135deg, #1a7bb8 0%, #2b94d7 100%); padding: 50px 0; color: white; }
+        .contact-card { background: white; border-radius: 16px; border: none; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+        .info-icon { width: 50px; height: 50px; background: #e3f2fd; color: #2b94d7; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.4rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-dark fs-3" href="{{ url_for('home') }}">Next<span class="text-sky-blue">Home</span></a>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('home') }}">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{{ url_for('manual') }}">User Manual</a></li>
+                    <li class="nav-item"><a class="nav-link active text-sky-blue" href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="contact-hero text-center">
+        <div class="container">
+            <h1 class="fw-bold display-5"><i class="fas fa-headset me-3"></i>Contact Us</h1>
+            <p class="lead text-white-50">We're here to help! Send us a message or reach out through our details.</p>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <div class="row g-5">
+            <div class="col-lg-7">
+                <div class="contact-card p-5">
+                    <h3 class="fw-bold mb-4">Get In Touch</h3>
+                    <form action="#" method="POST">
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Your Name</label>
+                            <input type="text" class="form-control" placeholder="Enter your name" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Email Address</label>
+                            <input type="email" class="form-control" placeholder="Enter your email" required>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Message</label>
+                            <textarea class="form-control" rows="5" placeholder="Type your message here..." required></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-sky-blue">Send Message <i class="fas fa-paper-plane ms-2"></i></button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="col-lg-5">
+                <div class="p-4">
+                    <h3 class="fw-bold mb-4">Our Information</h3>
+                    
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="info-icon me-3"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h6 class="fw-bold mb-0">Location</h6>
+                            <p class="text-muted mb-0">Colombo, Sri Lanka</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="info-icon me-3"><i class="fas fa-phone-alt"></i></div>
+                        <div>
+                            <h6 class="fw-bold mb-0">Phone Number</h6>
+                            <p class="text-muted mb-0">+94 11 234 5678</p>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="info-icon me-3"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h6 class="fw-bold mb-0">Email Support</h6>
+                            <p class="text-muted mb-0">support@nexthome.com</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-dark text-white text-center py-4 mt-5">
+        <p class="mb-0 small" style="opacity: 0.6;">&copy; 2026 NextHome Real Estate Platform. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
