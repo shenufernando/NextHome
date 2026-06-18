@@ -206,15 +206,32 @@ def admin_properties():
 
 
 # --- 2. APPROVE PROPERTY ROUTE ---
+
+# --- 2. APPROVE PROPERTY ROUTE (Fixed for Premium Payment Workflow) ---
 @admin_bp.route('/admin/property/approve/<int:property_id>', methods=['POST'])
 def approve_property(property_id):
     if 'loggedin' in session and session['role'] == 'admin':
         from app import mysql
-        cursor = mysql.connection.cursor()
-        cursor.execute("UPDATE properties SET status = 'Approved' WHERE id = %s", (property_id,))
-        mysql.connection.commit()
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        
+        # මුලින්ම පෝස්ට් එක Basic ද Premium ද කියලා චෙක් කරමු
+        cursor.execute("SELECT plan FROM properties WHERE id = %s", (property_id,))
+        property_data = cursor.fetchone()
+        
+        if property_data:
+            # Premium එකක් නම් පේමන්ට් ස්ටේටස් එකට දානවා, නැත්නම් කෙලින්ම Approve කරනවා
+            if property_data['plan'] == 'premium':
+                new_status = 'Approved_Pending_Payment'
+                flash_msg = 'Premium Property approved! Waiting for seller payment.'
+            else:
+                new_status = 'Approved'
+                flash_msg = 'Basic Property approved successfully and now Live!'
+                
+            cursor.execute("UPDATE properties SET status = %s WHERE id = %s", (new_status, property_id))
+            mysql.connection.commit()
+            
         cursor.close()
-        flash('Property approved successfully!', 'success')
+        flash(flash_msg, 'success')
         return redirect(url_for('admin_bp.admin_properties'))
         
     return redirect(url_for('login'))

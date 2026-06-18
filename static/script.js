@@ -1,4 +1,8 @@
-// 1. Search Filter Function
+// ==========================================
+// 👤 1. ADMIN USER MANAGEMENT FUNCTIONS
+// ==========================================
+
+// Search Filter Function
 function filterUsers() {
     let input = document.getElementById('userSearch').value.toLowerCase();
     let rows = document.getElementById('userTable').getElementsByTagName('tr');
@@ -13,21 +17,16 @@ function filterUsers() {
     }
 }
 
-// 2. Open Modal and Fill Data
+// Open Modal and Fill Data
 function openEditModal(id, name, email, role) {
-    // Form එක submit විය යුතු නිවැරදි URL එක dynamically සැකසීම
     document.getElementById('editForm').action = "/edit_user/" + id;
-    
-    // Pop-up එක ඇතුළේ ඇති Input වලට පරණ දත්ත ටික දැමීම
     document.getElementById('modal_name').value = name;
     document.getElementById('modal_email').value = email;
     document.getElementById('modal_role').value = role;
-    
-    // Pop-up එක පෙන්වීම
     document.getElementById('editModal').style.display = 'flex';
 }
 
-// 3. Close Modal
+// Close Modal
 function closeEditModal() {
     document.getElementById('editModal').style.display = 'none';
 }
@@ -41,64 +40,93 @@ window.onclick = function(event) {
 }
 
 
-//add property
-function toggleFields() {
-    let propertyType = document.getElementById('propertyType').value;
-    let residentialFields = document.querySelectorAll('.residential-fields');
-    
-    if (propertyType === 'land') {
-        residentialFields.forEach(field => field.style.display = 'none');
-    } else {
-        residentialFields.forEach(field => field.style.display = 'flex');
-    }
-}
+// ==========================================
+// 🏢 2. ADD PROPERTY FORM FUNCTIONS (FIXED)
+// ==========================================
 
 function handlePackageChange() {
-    let selectedPlan = document.querySelector('input[name="plan"]:checked').value;
+    // 1. Radio Button එක සිලෙක්ට් වෙලා තියෙනවද බලන්න
+    let selectedRadio = document.querySelector('input[name="plan"]:checked');
+    
+    // වැරදීමකින්වත් සිලෙක්ට් වෙලා නැත්නම් function එක නතර කරන්න
+    if (!selectedRadio) return; 
+    
+    let selectedPlan = selectedRadio.value;
     let premiumGalleryFields = document.querySelectorAll('.premium-gallery');
     let submitBtn = document.getElementById('submitBtn');
     
+    console.log("Selected Plan Changed to:", selectedPlan); // බ්‍රවුසර් එකේ වැඩ කරනවද බලන්න (F12)
+
     if (selectedPlan === 'premium') {
-        // Premium නම් පින්තූර 6ම පෙන්වනවා
-        premiumGalleryFields.forEach(field => field.style.display = 'flex');
-        submitBtn.innerHTML = "Request Approval (Rs. 3000)";
+        // Premium නම් පින්තූර 4, 5, 6 පෙන්වන්න
+        premiumGalleryFields.forEach(field => {
+            field.style.setProperty('display', 'block', 'important');
+        });
+        if (submitBtn) {
+            submitBtn.innerHTML = "Request Approval (Rs. 3000)";
+        }
     } else {
-        // Basic නම් පින්තූර 3යි
-        premiumGalleryFields.forEach(field => field.style.display = 'none');
-        submitBtn.innerHTML = "Request Approval (FREE)";
+        // Basic නම් පින්තූර 4, 5, 6 හංගන්න
+        premiumGalleryFields.forEach(field => {
+            field.style.setProperty('display', 'none', 'important');
+            
+            // ඉන්පුට් එක ඇතුළේ ෆයිල් එකක් තිබ්බොත් Clear කරන්න
+            let input = field.querySelector('input[type="file"]');
+            if (input) input.value = "";
+        });
+        if (submitBtn) {
+            submitBtn.innerHTML = "Request Approval (FREE)";
+        }
     }
 }
 
-// පිටුව මුලින්ම ලෝඩ් වෙද්දී ක්‍රියාත්මක වීම
+// පිටුව ලෝඩ් වෙද්දීම මේක එක පාරක් රන් කරන්න
 document.addEventListener("DOMContentLoaded", function() {
-    toggleFields();
     handlePackageChange();
 });
 
-// admin property
+// ==========================================
+// 🛠️ 3. ADMIN PROPERTY ACTIONS & CONFIRMATIONS (FIXED)
+// ==========================================
+
 document.addEventListener("DOMContentLoaded", function() {
+    // පිටුව ලෝඩ් වෙද්දී Add Property Form එකේ තත්ත්වය සකස් කිරීම
+    if (document.getElementById('propertyType')) {
+        toggleFields();
+    }
+    if (document.querySelector('input[name="plan"]')) {
+        handlePackageChange();
+    }
     
-    // 1. Approve කිරීමට පෙර තහවුරු කිරීම
+    // 🚦 1. Approve කිරීමට පෙර පැකේජ් එක අනුව තහවුරු කිරීමේ පණිවිඩය වෙනස් කිරීම
     const approveForms = document.querySelectorAll('.action-approve');
     approveForms.forEach(form => {
         form.addEventListener('submit', function(e) {
-            if(!confirm("Are you sure you want to APPROVE this property listing? It will go live immediately.")) {
-                e.preventDefault(); // එබුව ක්‍රියාව අවලංගු කරයි
+            // ටේබල් රෝ එකෙන් මේක Basic ද Premium ද කියලා අඳුරගන්නවා (data attributes හෝ text හරහා)
+            let isPremium = form.closest('tr').textContent.toLowerCase().includes('premium');
+            
+            let message = "Are you sure you want to APPROVE this Basic property listing? It will go live immediately.";
+            if (isPremium) {
+                message = "Are you sure you want to APPROVE this Premium property listing? It will be sent to the seller for Rs. 3,000.00 payment before going live.";
+            }
+            
+            if(!confirm(message)) {
+                e.preventDefault(); 
             }
         });
     });
 
-    // 2. Reject කිරීමට පෙර තහවුරු කිරීම
+    // 🛑 2. Reject කිරීමට පෙර තහවුරු කිරීම
     const rejectForms = document.querySelectorAll('.action-reject');
     rejectForms.forEach(form => {
         form.addEventListener('submit', function(e) {
-            if(!confirm("Are you sure you want to REJECT this property?")) {
+            if(!confirm("Are you sure you want to REJECT this property listing?")) {
                 e.preventDefault();
             }
         });
     });
 
-    // 3. Delete කිරීමට පෙර තහවුරු කිරීම
+    // ⚠️ 3. Delete කිරීමට පෙර තහවුරු කිරීම
     const deleteForms = document.querySelectorAll('.action-delete');
     deleteForms.forEach(form => {
         form.addEventListener('submit', function(e) {
@@ -107,5 +135,4 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     });
-
 });

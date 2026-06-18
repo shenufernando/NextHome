@@ -122,6 +122,7 @@ def seller_dashboard():
 # --- POST NEW PROPERTY (Fixed with exact column synchronization) ---
 # --- POST NEW PROPERTY (Fixed For Enum Column Error) ---
 # --- POST NEW PROPERTY (Fixed For Strict MySQL ENUM Column) ---
+# --- POST NEW PROPERTY (Fixed with Multi-Image Upload & Expiry Logistics) ---
 @app.route('/add_property', methods=['GET', 'POST'])
 def add_property():
     if 'id' not in session:
@@ -133,34 +134,40 @@ def add_property():
         price = request.form.get('price')
         contact_phone = request.form.get('contact_phone')
         
-        # HTML Dropdown එකෙන් එන Value එක ලබා ගැනීම
         raw_type = request.form.get('type', '')
-        
-        # 🚨 ENUM Error එක 100% නැති කරන Logic එක:
-        # ඔයාගේ HTML එකෙන් මොන වචනය ආවත්, ඩේටාබේස් ENUM එකට ගැලපෙන නිවැරදිම වචනය මෙතනින් තෝරනවා.
-        # (ඔයාගේ DB එකේ තියෙන වචන 'House' සහ 'Land' නම් මේක හරියටම මැච් වෙනවා)
         if 'land' in raw_type.lower():
             property_type = 'Land'
         else:
-            property_type = 'House' # Default එක විදිහට House දානවා
+            property_type = 'House'
 
         location = request.form.get('location')
         selected_plan = request.form.get('plan', 'basic')
 
+        # 📅 EXPIRED & STATUS LOGISTICS
         if selected_plan == 'premium':
             status = 'Pending_Approval'
-            expiry_date = datetime.now() + timedelta(days=60)
+            # Premium එක දින 30 කින් Expire වීමට (පේමන්ට් එක කළ දින සිට දින 30ක් සෙට් කිරීමට දැනට default දින 30ක් දමමු)
+            expiry_date = datetime.now() + timedelta(days=30)
         else:
             status = 'pending'
             expiry_date = datetime.now() + timedelta(days=14)
 
-        file = request.files.get('image1')
-        if file and file.filename != '':
-            filename = secure_filename(file.filename)
-            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-            image_url_value = filename
-        else:
+        # 📸 IMAGE UPLOAD LOGIC (පින්තූර 6ම එකතු කර කොමා වලින් වෙන් කර සේව් කිරීම)
+        saved_images = []
+        for i in range(1, 7):
+            file = request.files.get(f'image{i}')
+            if file and file.filename != '':
+                filename = secure_filename(file.filename)
+                # එකම නම තියෙන පින්තූර පැටලීම වැළැක්වීමට Timestamp එකක් එකතු කිරීම
+                unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
+                file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
+                saved_images.append(unique_filename)
+
+        # පින්තූර කිසිවක් අප්ලෝඩ් කර නැත්නම් default පින්තූරය දැමීම
+        if not saved_images:
             image_url_value = 'default.jpg'
+        else:
+            image_url_value = ",".join(saved_images) # උදා: "img1.jpg,img2.jpg,img3.jpg"
 
         cursor = mysql.connection.cursor()
         sql = """INSERT INTO properties 
@@ -176,29 +183,36 @@ def add_property():
         cursor.close()
 
         if selected_plan == 'premium':
-            flash('Premium Listing submitted! It will be open for payment once Admin approves it.')
+            flash('Premium Listing submitted! It will be open for payment once Admin approves it.', 'success')
         else:
-            flash('Property posted successfully! Pending admin approval.')
+            flash('Property posted successfully! Pending admin approval.', 'success')
 
         return redirect(url_for('seller_dashboard'))
 
     return render_template('add_property.html')
 
-# --- PREMIUM CONFIRM & PUBLISH ROUTE ---
+
+# --- PREMIUM CONFIRM & PUBLISH ROUTE (Fixed Expiry Activation) ---
 @app.route('/pay_premium/<int:post_id>', methods=['POST'])
 def pay_premium(post_id):
     if 'id' not in session:
         return redirect(url_for('login'))
         
     cursor = mysql.connection.cursor()
-    cursor.execute("UPDATE properties SET status = 'Approved' WHERE id = %s AND seller_id = %s", (post_id, session['id']))
+    # සල්ලි ගෙවපු ගමන් ස්ටේටස් එක 'Approved' කර, එතැන් සිට දින 30 කට Expiry සෙට් කිරීම
+    exact_expiry = datetime.now() + timedelta(days=30)
+    
+    cursor.execute("""
+        UPDATE properties 
+        SET status = 'Approved', expiry_date = %s 
+        WHERE id = %s AND seller_id = %s
+    """, (exact_expiry, post_id, session['id']))
+    
     mysql.connection.commit()
     cursor.close()
     
-    flash('Payment Successful! Your Premium post is now Live.')
+    flash('Payment Successful! Your Premium post is now Live for 30 Days.', 'success')
     return redirect(url_for('seller_dashboard'))
-
-
 
 
 
