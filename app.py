@@ -15,9 +15,6 @@ app.config['MYSQL_USER'] = 'root'
 app.config['MYSQL_PASSWORD'] = '1234'
 app.config['MYSQL_DB'] = 'NextHome'
 
-
-
-
 # Image Upload Config
 UPLOAD_FOLDER = 'static/uploads'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
@@ -51,7 +48,6 @@ def signup():
     return render_template('signup.html')
 
 # --- LOGIN LOGIC ---
-
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -88,7 +84,6 @@ def login():
 
     return render_template('login.html')
 
-
 @app.route('/about')
 def about():
     return render_template('about_us.html')
@@ -118,7 +113,6 @@ def seller_dashboard():
 
         return render_template('seller_dashboard.html', name=session['name'], posts=my_posts, unread=unread_msg)
     return redirect(url_for('login'))
-
 
 # --- POST NEW PROPERTY (Fixed with Multi-Image Upload & Expiry Logistics) ---
 @app.route('/add_property', methods=['GET', 'POST'])
@@ -189,7 +183,6 @@ def add_property():
 
     return render_template('add_property.html')
 
-
 # --- PREMIUM CONFIRM & PUBLISH ROUTE (Fixed Expiry Activation) ---
 @app.route('/pay_premium/<int:post_id>', methods=['POST'])
 def pay_premium(post_id):
@@ -212,11 +205,6 @@ def pay_premium(post_id):
     flash('Payment Successful! Your Premium post is now Live for 30 Days.', 'success')
     return redirect(url_for('seller_dashboard'))
 
-
-
-
-
-
 # --- EDIT PROPERTY ---
 @app.route('/edit_property/<int:property_id>', methods=['GET', 'POST'])
 def edit_property(property_id):
@@ -225,7 +213,6 @@ def edit_property(property_id):
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    
     if request.method == 'GET':
         cursor.execute("SELECT * FROM properties WHERE id = %s AND seller_id = %s", (property_id, session['id']))
         property_data = cursor.fetchone()
@@ -234,7 +221,6 @@ def edit_property(property_id):
             return render_template('edit_property.html', property=property_data)
         return redirect(url_for('seller_dashboard'))
 
-    
     elif request.method == 'POST':
         title = request.form.get('title')
         description = request.form.get('description')
@@ -251,7 +237,6 @@ def edit_property(property_id):
         mysql.connection.commit()
         cursor.close()
         return redirect(url_for('seller_dashboard'))
-
 
 # --- DELETE PROPERTY ---
 @app.route('/delete_property/<int:property_id>')
@@ -271,6 +256,40 @@ def delete_property(property_id):
 @app.route('/profile_settings')
 def profile_settings():
     return "Profile Settings Page (Under Construction)"
+
+# --- SELLER MESSAGES VIEW ---
+@app.route('/messages')
+def messages():
+    if 'loggedin' in session and session['role'] == 'seller':
+        cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+        
+        cursor.execute('''SELECT m.*, p.title as property_title FROM messages m
+                          JOIN properties p ON m.property_id = p.id
+                          WHERE p.seller_id = %s 
+                          ORDER BY m.id DESC''', (session['id'],))
+        all_messages = cursor.fetchall()
+        
+        cursor.execute('''SELECT COUNT(*) as unread FROM messages m
+                          JOIN properties p ON m.property_id = p.id
+                          WHERE p.seller_id = %s AND m.reply IS NULL''', (session['id'],))
+        unread_msg = cursor.fetchone()['unread']
+        cursor.close()
+
+        return render_template('messages.html', name=session['name'], messages=all_messages, unread=unread_msg)
+    return redirect(url_for('login'))
+
+# --- REPLY TO SEEKER MESSAGE ROUTE  ---
+@app.route('/reply_message/<int:message_id>', methods=['POST'])
+def reply_message(message_id):
+    if 'loggedin' in session and session['role'] == 'seller':
+        reply_text = request.form.get('reply_text')
+        cursor = mysql.connection.cursor()
+        cursor.execute("UPDATE messages SET reply = %s WHERE id = %s", (reply_text, message_id))
+        mysql.connection.commit()
+        cursor.close()
+        flash('Reply sent successfully!', 'success')
+        return redirect(url_for('messages'))
+    return redirect(url_for('login'))
 
 # --- LOGOUT ---
 @app.route('/logout')

@@ -22,9 +22,9 @@
     </div>
 </nav>
 
-    {% with messages = get_flashed_messages(with_categories=true) %}
-        {% if messages %}
-            {% for category, message in messages %}
+    {% with flash_messages = get_flashed_messages(with_categories=true) %}
+        {% if flash_messages %}
+            {% for category, message in flash_messages %}
                 <div class="alert alert-{{ category }} alert-dismissible fade show text-center m-0" role="alert">
                     {{ message }}
                     <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -72,7 +72,8 @@
                                             <h5 class="modal-title fw-bold" id="replyModalLabel"><i class="fas fa-paper-plane"></i> Reply to {{ msg.sender_name }}</h5>
                                             <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
-                                        <form action="{{ url_for('seller_bp.reply_message', message_id=msg.id) }}" method="POST">
+                                        
+                                        <form action="{{ url_for('reply_message', message_id=msg.id) }}" method="POST">
                                             <div class="modal-body">
                                                 <div class="mb-3">
                                                     <label class="form-label fw-bold">Original Message:</label>
@@ -82,7 +83,7 @@
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="reply_text" class="form-label fw-bold">Your Reply (ඔබේ පිළිතුර):</label>
-                                                    <textarea class="form-textarea form-control" name="reply_text" rows="4" placeholder="Type your reply here..." required></textarea>
+                                                    <textarea class="form-control" name="reply_text" rows="4" placeholder="Type your reply here..." required></textarea>
                                                 </div>
                                             </div>
                                             <div class="modal-footer">
