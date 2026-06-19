@@ -634,7 +634,7 @@ body { background-color: #fff; overflow-x: hidden; }
 
     display: flex;
 
-    justify-content: flex-end; /* Links දකුණු පැත්තට */
+    justify-content: flex-end; 
 
     align-items: center;
 
@@ -702,7 +702,7 @@ body { background-color: #fff; overflow-x: hidden; }
 
     display: flex;
 
-    height: calc(100vh - 70px); /* Nav bar එකේ උස අඩු කරාම ඉතිරි කොටස */
+    height: calc(100vh - 70px); 
 
 }
 
@@ -738,7 +738,7 @@ body { background-color: #fff; overflow-x: hidden; }
 
     color: #0369a1; 
 
-    white-space: nowrap; /* එක පේළියට තියාගන්න */
+    white-space: nowrap; 
 
 }
 
@@ -766,9 +766,9 @@ body { background-color: #fff; overflow-x: hidden; }
 
     display: flex;
 
-    justify-content: center; /* හරහට මැදට */
+    justify-content: center; 
 
-    align-items: center;     /* උසින් මැදට */
+    align-items: center;    
 
     background: #fff;
 
@@ -796,12 +796,9 @@ body { background-color: #fff; overflow-x: hidden; }
 
     background: #3498db;
 
-    /* අනිත් කලින් තිබුණ styles එහෙම්මමයි */
+    
 
 }
-
-
-
 
 
 /* admin adshboard */
@@ -824,31 +821,31 @@ body { background-color: #fff; overflow-x: hidden; }
     top: 0;
     z-index: 1000;
     display: flex;
-    flex-direction: column; /* උඩ සිට පහළට පෙළගැස්වීම */
+    flex-direction: column; 
 }
 
-/* --- ඔයා ඉල්ලපු NextHome Heading එක --- */
+/* ---  NextHome Heading --- */
 .sidebar-header {
     padding: 40px 20px;
     font-size: 30px;
     font-weight: 800;
     text-align: center;
     background: #2c3e50; 
-    color: #3498db; /* Next කොටස නිල් */
+    color: #3498db; 
     text-transform: uppercase;
     border-bottom: 1px solid rgba(255,255,255,0.1);
 }
 
 .sidebar-header span {
-    color: #ffffff; /* Home කොටස සුදු */
+    color: #ffffff; 
 }
 
-/* Sidebar Menu Spacing - අකුරු එක උඩ එක වැටීම වැළැක්වීමට */
+/* Sidebar Menu Spacing  */
 .sidebar-menu {
     padding: 20px 15px;
     display: flex;
     flex-direction: column;
-    gap: 10px; /* Menu අතර ඉඩ */
+    gap: 10px; /* Menu space */
 }
 
 .sidebar-menu a {
@@ -874,14 +871,14 @@ body { background-color: #fff; overflow-x: hidden; }
     color: #fff;
 }
 
-/* Logout button එක පතුලටම යැවීම */
+/* Logout button  */
 .logout-link {
-    margin-top: auto; /* අනිත් ඒවායින් ඈත් කර පහළටම යවයි */
+    margin-top: auto; 
     margin-bottom: 30px;
     color: #e74c3c !important;
 }
 
-/* Main Content එක Sidebar එකට යට නොවීමට */
+/* Main Content  Sidebar  */
 .main-content {
     margin-left: 280px;
     padding: 40px;
@@ -912,7 +909,7 @@ body { background-color: #fff; overflow-x: hidden; }
 .main-content {
     margin-left: 280px;
     padding: 40px;
-    background-color: #f8fafc; /* මෘදු අළු පැහැයක් */
+    background-color: #f8fafc; 
     min-height: 100vh;
 }
 
@@ -949,8 +946,8 @@ body { background-color: #fff; overflow-x: hidden; }
 .stat-card {
     background: #ffffff;
     padding: 30px;
-    border-radius: 20px; /* වඩාත් වටකුරු මුළු */
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); /* ඉතා මෘදු Shadow එකක් */
+    border-radius: 20px; 
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.03); 
     display: flex;
     align-items: center;
     gap: 20px;
@@ -1029,7 +1026,7 @@ body { background-color: #fff; overflow-x: hidden; }
 table {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 10px; /* පේළි අතර ඉඩ තැබීමට */
+    border-spacing: 0 10px; /* line space */
 }
 
 th {
@@ -1052,7 +1049,7 @@ td {
     font-size: 15px;
 }
 
-/* පළමු සහ අවසාන TD වල වටකුරු මුළු */
+
 td:first-child { border-left: 1px solid #f1f5f9; border-top-left-radius: 12px; border-bottom-left-radius: 12px; }
 td:last-child { border-right: 1px solid #f1f5f9; border-top-right-radius: 12px; border-bottom-right-radius: 12px; }
 
@@ -1233,9 +1230,6 @@ td { padding: 15px; border-bottom: 1px solid #f1f5f9; color: #334155; font-size:
 .btn-edit { color: #3498db; }
 .btn-delete { color: #ef4444; }
 .empty-msg { text-align: center; color: #94a3b8; padding: 30px !important; font-style: italic; }
-
-
-
 
 
 
@@ -1673,11 +1667,11 @@ body {
     -webkit-box-orient: vertical;  
     overflow: hidden;
     
-    /* 🎯 මේ විදිහට ලියන්න, එතකොට Warning එක නැති වෙලාම යනවා */
+    
     line-clamp: 2;
     -webkit-line-clamp: 2; 
     
-    height: 48px; /* Line-height එක අනුව සමබරව තියාගන්න */
+    height: 48px; 
 }
 
 
@@ -1699,8 +1693,8 @@ footer {
     font-size: 0.9rem;
     letter-spacing: 0.5px;
 }
-/* details modal එක ඇතුළත scroll වෙන්න CSS */
+/* details modal scroll */
 .modal-body {
-    max-height: 65vh; /* modal එකේ උස screen එකේ උසින් 65% කට සීමා කරනවා */
-    overflow-y: auto; /* content එක වැඩි නම් scrollbar එකක් එනවා */
+    max-height: 65vh; 
+    overflow-y: auto; 
 }

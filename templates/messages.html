@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seller Messages - NextHome</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body class="bg-light">
+
+   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="#">Next<span class="text-warning">Home</span></a>
+        <div class="d-flex align-items-center">
+            <a href="{{ url_for('seller_dashboard') }}" class="btn btn-outline-warning btn-sm me-2">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+            <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</a>
+        </div>
+    </div>
+</nav>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="alert alert-{{ category }} alert-dismissible fade show text-center m-0" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+
+    <div class="container my-5" style="margin-bottom: 100px !important;">
+        <h3 class="fw-bold mb-4"><i class="fas fa-comments text-primary"></i> Buyer Inquiries (ලැබුණු මැසේජ්)</h3>
+        
+        {% if messages %}
+            <div class="table-responsive bg-white p-3 shadow-sm rounded">
+                <table class="table table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>Property</th>
+                            <th>From (Buyer)</th>
+                            <th>Message</th>
+                            <th>Received Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for msg in messages %}
+                            <tr>
+                                <td><strong class="text-primary">{{ msg.property_title if msg.property_title else 'Property #' ~ msg.property_id }}</strong></td>
+                                <td>
+                                    <strong>{{ msg.sender_name }}</strong><br>
+                                    <small class="text-muted">{{ msg.sender_email }}</small>
+                                </td>
+                                <td><i class="text-muted">"{{ msg.message }}"</i></td>
+                                <td>{{ msg.created_at.strftime('%Y-%m-%d %H:%M') if msg.created_at else '' }}</td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline-success fw-bold" data-bs-toggle="modal" data-bs-target="#replyModal{{ msg.id }}">
+                                        <i class="fas fa-reply"></i> Reply
+                                    </button>
+                                </td>
+                            </tr>
+
+                            <div class="modal fade" id="replyModal{{ msg.id }}" tabindex="-1" aria-labelledby="replyModalLabel" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered">
+                                    <div class="modal-content">
+                                        <div class="modal-header bg-success text-white">
+                                            <h5 class="modal-title fw-bold" id="replyModalLabel"><i class="fas fa-paper-plane"></i> Reply to {{ msg.sender_name }}</h5>
+                                            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <form action="{{ url_for('seller_bp.reply_message', message_id=msg.id) }}" method="POST">
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    <label class="form-label fw-bold">Original Message:</label>
+                                                    <blockquote class="bg-light p-3 rounded text-muted">
+                                                        "{{ msg.message }}"
+                                                    </blockquote>
+                                                </div>
+                                                <div class="mb-3">
+                                                    <label for="reply_text" class="form-label fw-bold">Your Reply (ඔබේ පිළිතුර):</label>
+                                                    <textarea class="form-textarea form-control" name="reply_text" rows="4" placeholder="Type your reply here..." required></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-success fw-bold"><i class="fas fa-share"></i> Send Reply</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <div class="alert alert-info text-center shadow-sm">
+                <i class="fas fa-info-circle"></i> No messages received yet from buyers.
+            </div>
+        {% endif %}
+    </div>
+
+    <footer class="bg-dark text-white text-center py-3 mt-5 fixed-bottom">
+        <p class="mb-0">&copy; 2026 NextHome Real Estate Platform. All Rights Reserved.</p>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

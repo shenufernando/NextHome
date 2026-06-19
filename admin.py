@@ -10,19 +10,19 @@ def admin_dashboard():
         from app import mysql
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         
-        # අලුත්ම යූසර්ස්ලා 5 දෙනා ලබාගැනීම
+        # new user 5 
         cursor.execute('SELECT id, name, email, role FROM users ORDER BY id DESC LIMIT 5')
         users = cursor.fetchall()
 
-        # මුළු යූසර්ස්ලා ගණන
+        # total users
         cursor.execute('SELECT COUNT(*) as count FROM users')
         user_count = cursor.fetchone()['count']
         
-        # මුළු Properties ගණන
+        # total Properties
         cursor.execute('SELECT COUNT(*) as count FROM properties')
         property_count = cursor.fetchone()['count']
         
-        # Basic (pending) සහ Premium (Pending_Approval) පෝස්ට් දෙවර්ගයම මෙතනින් රීඩ් කරයි.
+        # Basic (pending) ස, Premium (Pending_Approval) 
         cursor.execute("SELECT * FROM properties WHERE status IN ('pending', 'Pending_Approval') ORDER BY id DESC")
         pending_properties = cursor.fetchall()
         
@@ -174,7 +174,7 @@ def admin_properties():
         from app import mysql
         cursor = mysql.connection.cursor()
         
-        # 📊 සංඛ්‍යාලේඛන ලබා ගැනීම
+        # 📊 
         cursor.execute("SELECT COUNT(*) FROM properties WHERE status = 'Approved'")
         active_count = cursor.fetchone()[0]
         
@@ -184,7 +184,7 @@ def admin_properties():
         cursor.execute("SELECT COUNT(*) FROM properties WHERE status IN ('pending', 'Pending_Approval')")
         pending_count = cursor.fetchone()[0]
 
-        # 📋 සියලුම දේපළ විස්තර (Seller ගේ නමත් සමඟ) ලබා ගැනීම
+        # 📋 
         sql = """SELECT p.id, p.title, p.price, p.type, p.status, p.expiry_date, p.image_url, u.name 
                  FROM properties p 
                  JOIN users u ON p.seller_id = u.id 
@@ -214,12 +214,12 @@ def approve_property(property_id):
         from app import mysql
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         
-        # මුලින්ම පෝස්ට් එක Basic ද Premium ද කියලා චෙක් කරමු
+        # check Basic , Premium 
         cursor.execute("SELECT plan FROM properties WHERE id = %s", (property_id,))
         property_data = cursor.fetchone()
         
         if property_data:
-            # Premium එකක් නම් පේමන්ට් ස්ටේටස් එකට දානවා, නැත්නම් කෙලින්ම Approve කරනවා
+            # Premium , Approve කරනව
             if property_data['plan'] == 'premium':
                 new_status = 'Approved_Pending_Payment'
                 flash_msg = 'Premium Property approved! Waiting for seller payment.'

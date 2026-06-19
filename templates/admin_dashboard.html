@@ -7,12 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
-    <!-- ඔයාගේ CSS ෆයිල් එකේ නම style.css නිසා අපි මෙතනට style.css කියන නම නිවැරදිව දැම්මා -->
+    
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-    <!-- Admin Wrapper එකක් එකතු කළා CSS වලට ගැලපෙන්න -->
+    <!-- Admin Wrapper -->
     <div class="admin-wrapper">
         
         <!-- Sidebar Section -->
@@ -23,7 +23,6 @@
                 <a href="/manage_users"><i class="fas fa-users"></i> Manage Users</a>
                 <a href="#"><i class="fas fa-building"></i> Properties</a>
                 <a href="href="/settings"><i class="fas fa-cog"></i> Settings</a>
-                <!-- CSS එකේ තියෙන ලස්සන Logout ස්ටයිල් එක ලැබෙන්න class="logout-link" එකතු කළා -->
                 <a href="/logout" class="logout-link"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
@@ -31,17 +30,16 @@
         <!-- Main Content Section -->
         <div class="main-content">
             
-            <!-- CSS එකේ .dashboard-header වලට ගැලපෙන්න වෙනස් කළා -->
+            <!-- .dashboard-header  -->
             <div class="dashboard-header">
                 <h2>Admin Dashboard <span>Overview</span></h2>
                 <p>Welcome back, <strong>Admin</strong></p>
             </div>
 
-            <!-- CSS එකේ .stats-grid වලට ගැලපෙන්න වෙනස් කළා -->
+            
             <div class="stats-grid">
                 <div class="stat-card">
-                    <i class="fas fa-user-friends"></i>
-                    <!-- CSS එකේ .stat-info වලට ගැලපෙන්න වෙනස් කළා -->
+                   
                     <div class="stat-info">
                         <h3>{{ user_count }}</h3>
                         <p>Total Users</p>
@@ -55,7 +53,6 @@
                     <h3>Recently Registered Users</h3>
                 </div>
                 
-                <!-- යූසර්ස්ලා පෙන්වන්න ඔයාගේ CSS වලටම ගැලපෙන සුපිරි Table එකක් මෙතනින් එකතු කළා -->
                 <table>
                     <thead>
                         <tr>
@@ -66,7 +63,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <!-- Flask හරහා එන යූසර්ස්ලා ලූප් එකක් මඟින් පෙන්වීමට -->
+                        <!-- Flask  -->
                         {% for user in users %}
                         <tr>
                             <td>{{ user.id }}</td>

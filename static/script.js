@@ -31,7 +31,7 @@ function closeEditModal() {
     document.getElementById('editModal').style.display = 'none';
 }
 
-// Pop-up එකෙන් පිටත ක්ලික් කරත් වැසෙන්න හැදීම
+// Pop-up 
 window.onclick = function(event) {
     let modal = document.getElementById('editModal');
     if (event.target == modal) {
@@ -45,20 +45,19 @@ window.onclick = function(event) {
 // ==========================================
 
 function handlePackageChange() {
-    // 1. Radio Button එක සිලෙක්ට් වෙලා තියෙනවද බලන්න
+    // 1. Radio Button 
     let selectedRadio = document.querySelector('input[name="plan"]:checked');
     
-    // වැරදීමකින්වත් සිලෙක්ට් වෙලා නැත්නම් function එක නතර කරන්න
     if (!selectedRadio) return; 
     
     let selectedPlan = selectedRadio.value;
     let premiumGalleryFields = document.querySelectorAll('.premium-gallery');
     let submitBtn = document.getElementById('submitBtn');
     
-    console.log("Selected Plan Changed to:", selectedPlan); // බ්‍රවුසර් එකේ වැඩ කරනවද බලන්න (F12)
+    console.log("Selected Plan Changed to:", selectedPlan); 
 
     if (selectedPlan === 'premium') {
-        // Premium නම් පින්තූර 4, 5, 6 පෙන්වන්න
+        // Premium image 4, 5, 6 
         premiumGalleryFields.forEach(field => {
             field.style.setProperty('display', 'block', 'important');
         });
@@ -66,11 +65,11 @@ function handlePackageChange() {
             submitBtn.innerHTML = "Request Approval (Rs. 3000)";
         }
     } else {
-        // Basic නම් පින්තූර 4, 5, 6 හංගන්න
+        // Basic  4, 5, 6 hide
         premiumGalleryFields.forEach(field => {
             field.style.setProperty('display', 'none', 'important');
             
-            // ඉන්පුට් එක ඇතුළේ ෆයිල් එකක් තිබ්බොත් Clear කරන්න
+           
             let input = field.querySelector('input[type="file"]');
             if (input) input.value = "";
         });
@@ -80,7 +79,6 @@ function handlePackageChange() {
     }
 }
 
-// පිටුව ලෝඩ් වෙද්දීම මේක එක පාරක් රන් කරන්න
 document.addEventListener("DOMContentLoaded", function() {
     handlePackageChange();
 });
@@ -90,7 +88,7 @@ document.addEventListener("DOMContentLoaded", function() {
 // ==========================================
 
 document.addEventListener("DOMContentLoaded", function() {
-    // පිටුව ලෝඩ් වෙද්දී Add Property Form එකේ තත්ත්වය සකස් කිරීම
+    // Add Property Form 
     if (document.getElementById('propertyType')) {
         toggleFields();
     }
@@ -98,11 +96,11 @@ document.addEventListener("DOMContentLoaded", function() {
         handlePackageChange();
     }
     
-    // 🚦 1. Approve කිරීමට පෙර පැකේජ් එක අනුව තහවුරු කිරීමේ පණිවිඩය වෙනස් කිරීම
+    // 🚦 1. Approve 
     const approveForms = document.querySelectorAll('.action-approve');
     approveForms.forEach(form => {
         form.addEventListener('submit', function(e) {
-            // ටේබල් රෝ එකෙන් මේක Basic ද Premium ද කියලා අඳුරගන්නවා (data attributes හෝ text හරහා)
+            //  Basic , Premium  (data attributes , text )
             let isPremium = form.closest('tr').textContent.toLowerCase().includes('premium');
             
             let message = "Are you sure you want to APPROVE this Basic property listing? It will go live immediately.";
@@ -116,7 +114,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // 🛑 2. Reject කිරීමට පෙර තහවුරු කිරීම
+    // 🛑 2. Reject
     const rejectForms = document.querySelectorAll('.action-reject');
     rejectForms.forEach(form => {
         form.addEventListener('submit', function(e) {
@@ -126,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 
-    // ⚠️ 3. Delete කිරීමට පෙර තහවුරු කිරීම
+    // ⚠️ 3. Delete 
     const deleteForms = document.querySelectorAll('.action-delete');
     deleteForms.forEach(form => {
         form.addEventListener('submit', function(e) {

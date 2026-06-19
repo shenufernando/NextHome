@@ -194,7 +194,7 @@
                                 
                                 {% if post.status == 'Approved_Pending_Payment' or post.status == 'Pending Payment' %}
                                     <div style="margin-top: 5px;">
-                                        <!-- 🛠️ 100% FIXED: ආරක්ෂිතව HTML data attributes මඟින් අගයන් JavaScript වෙත යැවීම -->
+                                        <!--  100% FIXED: HTML data attributes  JavaScript  -->
                                         <button class="pay-zone-btn" data-id="{{ post.id }}" data-title="{{ post.title }}" onclick="handlePayClick(this)">
                                             <i class="fas fa-credit-card"></i> Pay Now
                                         </button>
@@ -225,7 +225,7 @@
         </main>
     </div>
 
-    <!-- 💡 පේමන්ට් එකට අදාළ Hidden Modal එක -->
+    <!--  Hidden Modal -->
     <div id="paymentModal" class="custom-payment-modal">
         <div class="modal-body-card">
             <div class="modal-header-blue">
@@ -268,7 +268,7 @@
     </div>
 
     <script>
-        // බටන් එක ක්ලික් කරපු ගමන් දත්ත ආරක්ෂිතව කියවා ගන්නා ශ්‍රිතය
+       
         function handlePayClick(buttonElement) {
             let postId = buttonElement.getAttribute('data-id');
             let postTitle = buttonElement.getAttribute('data-title');

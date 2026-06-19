@@ -2,11 +2,11 @@ from flask import Blueprint, render_template, request, redirect, url_for, sessio
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
 
-# 🔑 Seeker Blueprint එක Create කිරීම
+# 🔑 Seeker Blueprint Create ම
 seeker_bp = Blueprint('seeker_bp', __name__)
 
-# app.py එකේ තියෙන mysql object එක මෙතනට ගන්න බැරි නිසා, 
-# අපි පස්සේ app.py එකෙන් මේක initialize කරගන්නවා.
+# app.py 
+# app.py  initialize
 mysql = None
 
 def init_mysql(mysql_obj):
@@ -19,7 +19,7 @@ def seeker_dashboard():
     if 'loggedin' in session and session['role'] == 'seeker':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         
-        # Approved (Live) පෝස්ට් විතරක් ගන්නවා
+        # Approved (Live) 
         cursor.execute("SELECT * FROM properties WHERE status = 'Approved' ORDER BY id DESC")
         live_properties = cursor.fetchall()
         cursor.close()
@@ -48,4 +48,4 @@ def send_message(property_id):
         cursor.close()
         
         flash('Your message has been sent to the seller successfully!', 'success')
-        return redirect(url_for('seeker_bp.seeker_dashboard')) # 🚨 Blueprint නිසා ලින්ක් එක වෙනස් වුණා
+        return redirect(url_for('seeker_bp.seeker_dashboard')) #  Blueprint link

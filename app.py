@@ -75,11 +75,11 @@ def login():
             session['name'] = account['name']
             session['role'] = account['role']
             
-            # 🔄 රෝල් එක අනුව අදාළ ඩෑෂ්බෝඩ් එකට යැවීම
+            # 🔄role
             if account['role'] == 'seller':
                 return redirect(url_for('seller_dashboard'))
             elif account['role'] == 'seeker':
-                # 🎯 මෙතනට Seeker Blueprint එකේ ලින්ක් එක එකතු කළා:
+                # මෙ Seeker Blueprint link:
                 return redirect(url_for('seeker_bp.seeker_dashboard'))
             else:
                 return redirect(url_for('home'))
@@ -119,9 +119,7 @@ def seller_dashboard():
         return render_template('seller_dashboard.html', name=session['name'], posts=my_posts, unread=unread_msg)
     return redirect(url_for('login'))
 
-# --- POST NEW PROPERTY (Fixed with exact column synchronization) ---
-# --- POST NEW PROPERTY (Fixed For Enum Column Error) ---
-# --- POST NEW PROPERTY (Fixed For Strict MySQL ENUM Column) ---
+
 # --- POST NEW PROPERTY (Fixed with Multi-Image Upload & Expiry Logistics) ---
 @app.route('/add_property', methods=['GET', 'POST'])
 def add_property():
@@ -146,28 +144,28 @@ def add_property():
         # 📅 EXPIRED & STATUS LOGISTICS
         if selected_plan == 'premium':
             status = 'Pending_Approval'
-            # Premium එක දින 30 කින් Expire වීමට (පේමන්ට් එක කළ දින සිට දින 30ක් සෙට් කිරීමට දැනට default දින 30ක් දමමු)
+            # Premium  30 days Expire වීම 
             expiry_date = datetime.now() + timedelta(days=30)
         else:
             status = 'pending'
             expiry_date = datetime.now() + timedelta(days=14)
 
-        # 📸 IMAGE UPLOAD LOGIC (පින්තූර 6ම එකතු කර කොමා වලින් වෙන් කර සේව් කිරීම)
+        # 📸 IMAGE UPLOAD LOGIC (image 6)
         saved_images = []
         for i in range(1, 7):
             file = request.files.get(f'image{i}')
             if file and file.filename != '':
                 filename = secure_filename(file.filename)
-                # එකම නම තියෙන පින්තූර පැටලීම වැළැක්වීමට Timestamp එකක් එකතු කිරීම
+                #  Timestamp 
                 unique_filename = f"{datetime.now().strftime('%Y%m%d%H%M%S')}_{filename}"
                 file.save(os.path.join(app.config['UPLOAD_FOLDER'], unique_filename))
                 saved_images.append(unique_filename)
 
-        # පින්තූර කිසිවක් අප්ලෝඩ් කර නැත්නම් default පින්තූරය දැමීම
+        #  default image
         if not saved_images:
             image_url_value = 'default.jpg'
         else:
-            image_url_value = ",".join(saved_images) # උදා: "img1.jpg,img2.jpg,img3.jpg"
+            image_url_value = ",".join(saved_images) # ex: "img1.jpg,img2.jpg,img3.jpg"
 
         cursor = mysql.connection.cursor()
         sql = """INSERT INTO properties 
@@ -199,7 +197,7 @@ def pay_premium(post_id):
         return redirect(url_for('login'))
         
     cursor = mysql.connection.cursor()
-    # සල්ලි ගෙවපු ගමන් ස්ටේටස් එක 'Approved' කර, එතැන් සිට දින 30 කට Expiry සෙට් කිරීම
+    #  'Approved' 30 days Expiry 
     exact_expiry = datetime.now() + timedelta(days=30)
     
     cursor.execute("""
@@ -227,7 +225,7 @@ def edit_property(property_id):
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
 
-    # 1. යූසර් පේජ් එකට එනකොට (GET) පරණ විස්තර ටික ඩේටාබේස් එකෙන් අරන් පෙන්වනවා
+    
     if request.method == 'GET':
         cursor.execute("SELECT * FROM properties WHERE id = %s AND seller_id = %s", (property_id, session['id']))
         property_data = cursor.fetchone()
@@ -236,7 +234,7 @@ def edit_property(property_id):
             return render_template('edit_property.html', property=property_data)
         return redirect(url_for('seller_dashboard'))
 
-    # 2. යූසර් විස්තර වෙනස් කරලා බටන් එක එබුවම (POST) ඩේටාබේස් එක Update කරනවා
+    
     elif request.method == 'POST':
         title = request.form.get('title')
         description = request.form.get('description')
@@ -262,7 +260,7 @@ def delete_property(property_id):
         return redirect(url_for('login'))
         
     cursor = mysql.connection.cursor()
-    # 🚨 සෙලර්ට අයිති පෝස්ට් එකක්මද කියලා ෂුවර් කරගෙන මකා දමනවා
+    
     cursor.execute("DELETE FROM properties WHERE id = %s AND seller_id = %s", (property_id, session['id']))
     mysql.connection.commit()
     cursor.close()
@@ -282,15 +280,15 @@ def logout():
 
 # --- BLUEPRINT REGISTRATION ---
 
-# 1. Admin Blueprint එක (දැනටමත් තිබුණ එක)
+# 1. Admin Blueprint
 from admin import admin_bp
 app.register_blueprint(admin_bp)
 
-# 2. Seeker Blueprint එක (අලුතින් එකතු කළ යුත්තේ මේ විදිහටයි)
+# 2. Seeker Blueprint 
 from seeker import seeker_bp, init_mysql
-init_mysql(mysql)  # app.py එකේ තියෙන mysql object එක seeker එකට පාස් කරනවා
+init_mysql(mysql)  
 app.register_blueprint(seeker_bp)
 
-# 🚨 සේරටම පස්සේ තමයි ඇප් එක රන් වෙන්න ඕනේ!
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)
