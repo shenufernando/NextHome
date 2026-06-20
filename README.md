@@ -17,6 +17,7 @@ NextHome is a web-based Real Estate platform built using Python (Flask) and MySQ
 
 ### 🛡️ Admin Panel
 - **Approval System:** A moderation queue allowing administrators to review, approve, or reject property posts (both Basic and Premium) before they go live on the website.
+- **Real-time Financial Analytics:** An intuitive system tracking earnings history, overall premium subscriptions, and cumulative system revenue.
 
 ---
 
