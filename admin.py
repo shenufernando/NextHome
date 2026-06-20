@@ -219,7 +219,7 @@ def approve_property(property_id):
         property_data = cursor.fetchone()
         
         if property_data:
-            # Premium , Approve කරනව
+            # Premium , Approve ක
             if property_data['plan'] == 'premium':
                 new_status = 'Approved_Pending_Payment'
                 flash_msg = 'Premium Property approved! Waiting for seller payment.'
@@ -265,3 +265,48 @@ def delete_property(property_id):
         return redirect(url_for('admin_bp.admin_properties'))
         
     return redirect(url_for('login'))
+
+
+
+@admin_bp.route('/admin_earnings') 
+def admin_earnings():
+    if 'loggedin' not in session or session['role'] != 'admin':
+        return redirect(url_for('login'))
+        
+    #   Circular Import error 
+    from app import mysql
+    
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    
+    try:
+        # 1. Approved(Basic)
+        cursor.execute("SELECT COUNT(*) AS total FROM properties WHERE plan = 'basic' AND status = 'approved'")
+        basic_count = cursor.fetchone()['total']
+        
+        # 2. Approved (Premium)
+        cursor.execute("SELECT COUNT(*) AS total FROM properties WHERE plan = 'premium' AND status = 'approved'")
+        premium_count = cursor.fetchone()['total']
+        
+        # 3. Payments (SUM)
+        cursor.execute("SELECT SUM(amount) AS total_earnings FROM payments WHERE payment_status = 'completed'")
+        earnings_result = cursor.fetchone()
+        total_earnings = earnings_result['total_earnings'] if earnings_result['total_earnings'] is not None else 0.00
+        
+        # 4. \\ payments \
+        cursor.execute("SELECT id, property_id, seller_id, amount, payment_status, paid_at FROM payments ORDER BY id DESC")
+        payments_list = cursor.fetchall()
+        
+    except Exception as e:
+        print(f"Error: {e}")
+        basic_count = 0
+        premium_count = 0
+        total_earnings = 0.00
+        payments_list = []
+    finally:
+        cursor.close()
+    
+    return render_template('admin_earnings.html', 
+                           basic_count=basic_count, 
+                           premium_count=premium_count, 
+                           total_earnings=total_earnings,
+                           payments=payments_list)

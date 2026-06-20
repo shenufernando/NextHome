@@ -183,27 +183,44 @@ def add_property():
 
     return render_template('add_property.html')
 
-# --- PREMIUM CONFIRM & PUBLISH ROUTE (Fixed Expiry Activation) ---
+# --- PREMIUM CONFIRM, UPDATE PROPERTY & SAVE PAYMENT (ALL IN ONE) ---
 @app.route('/pay_premium/<int:post_id>', methods=['POST'])
 def pay_premium(post_id):
-    if 'id' not in session:
+    if 'loggedin' not in session:
         return redirect(url_for('login'))
         
+    seller_id = session['id']
     cursor = mysql.connection.cursor()
-    #  'Approved' 30 days Expiry 
-    exact_expiry = datetime.now() + timedelta(days=30)
     
-    cursor.execute("""
-        UPDATE properties 
-        SET status = 'Approved', expiry_date = %s 
-        WHERE id = %s AND seller_id = %s
-    """, (exact_expiry, post_id, session['id']))
-    
-    mysql.connection.commit()
-    cursor.close()
-    
-    flash('Payment Successful! Your Premium post is now Live for 30 Days.', 'success')
+    try:
+        # 1. properties, status  ,Approved , premium 
+        exact_expiry = datetime.now() + timedelta(days=30)
+        cursor.execute("""
+            UPDATE properties 
+            SET status = 'Approved', plan = 'premium', expiry_date = %s 
+            WHERE id = %s AND seller_id = %s
+        """, (exact_expiry, post_id, seller_id))
+        
+        # 2. payments Rs. 3000 
+        cursor.execute("""
+            INSERT INTO payments (property_id, seller_id, amount, payment_status) 
+            VALUES (%s, %s, %s, %s)
+        """, (post_id, seller_id, 3000.00, 'completed'))
+        
+       
+        mysql.connection.commit()
+        flash('Payment Successful! Your Premium post is now Live for 30 Days.', 'success')
+        
+    except Exception as e:
+        mysql.connection.rollback() 
+        print(f"Payment Error: {e}")
+        flash('Something went wrong with the payment. Please try again.', 'danger')
+        
+    finally:
+        cursor.close()
+        
     return redirect(url_for('seller_dashboard'))
+
 
 # --- EDIT PROPERTY ---
 @app.route('/edit_property/<int:property_id>', methods=['GET', 'POST'])
@@ -257,13 +274,17 @@ def delete_property(property_id):
 def profile_settings():
     return "Profile Settings Page (Under Construction)"
 
-# --- SELLER MESSAGES VIEW ---
+
+# --- SELLER MESSAGES VIEW (UPDATED FOR BUYER NAME & EMAIL) ---
 @app.route('/messages')
 def messages():
     if 'loggedin' in session and session['role'] == 'seller':
         cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         
-        cursor.execute('''SELECT m.*, p.title as property_title FROM messages m
+       
+        cursor.execute('''SELECT m.*, u.name AS sender_name, u.email AS sender_email, p.title as property_title 
+                          FROM messages m
+                          LEFT JOIN users u ON m.sender_id = u.id
                           JOIN properties p ON m.property_id = p.id
                           WHERE p.seller_id = %s 
                           ORDER BY m.id DESC''', (session['id'],))
@@ -278,7 +299,7 @@ def messages():
         return render_template('messages.html', name=session['name'], messages=all_messages, unread=unread_msg)
     return redirect(url_for('login'))
 
-# --- REPLY TO SEEKER MESSAGE ROUTE  ---
+# --- REPLY TO SEEKER MESSAGE ROUTE (UPDATED FOR REDIRECT FIX) ---
 @app.route('/reply_message/<int:message_id>', methods=['POST'])
 def reply_message(message_id):
     if 'loggedin' in session and session['role'] == 'seller':

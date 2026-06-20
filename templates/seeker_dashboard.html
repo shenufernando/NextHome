@@ -26,6 +26,11 @@
             <a class="navbar-brand fw-bold" href="#">Next<span class="text-warning">Home</span></a>
             <div class="d-flex align-items-center">
                 <span class="navbar-text me-3 text-white">Welcome, <strong class="text-warning">{{ name }}</strong> (Seeker)</span>
+                
+                <a href="{{ url_for('seeker_bp.my_messages') }}" class="btn btn-sm btn-primary me-2">
+                    <i class="fas fa-envelope"></i> My Inquiries
+                </a>
+                
                 <a href="{{ url_for('logout') }}" class="btn btn-outline-light btn-sm"><i class="fas fa-sign-out-alt"></i> Logout</a>
             </div>
         </div>
@@ -56,7 +61,9 @@
                         </div>
                     </div>
                     <div class="col-md-4">
-                        <button type="submit" class="btn btn-warning w-100 fw-bold"><i class="fas fa-search"></i> Search Properties</button>
+                        <div class="button-search">
+                            <button type="submit" class="btn btn-warning w-100 fw-bold"><i class="fas fa-search"></i> Search Properties</button>
+                        </div>
                     </div>
                 </div>
             </form>
